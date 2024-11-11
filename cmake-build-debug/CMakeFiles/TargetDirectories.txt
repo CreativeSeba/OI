@@ -1,3 +1,0 @@
-C:/Users/lagan/CLionProjects/OI/cmake-build-debug/CMakeFiles/OI.dir
-C:/Users/lagan/CLionProjects/OI/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/lagan/CLionProjects/OI/cmake-build-debug/CMakeFiles/rebuild_cache.dir
