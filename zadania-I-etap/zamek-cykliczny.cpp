@@ -94,5 +94,6 @@ int main() {
     cin >> number;
 
     cout << calculateMinButtonPresses(number) << endl;
+
     return 0;
 }

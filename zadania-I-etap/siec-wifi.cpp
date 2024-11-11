@@ -53,5 +53,6 @@ int main() {
         double result = binary_search(acc, n);
         cout << result << endl; // Output the result
     }
+
     return 0;
 }

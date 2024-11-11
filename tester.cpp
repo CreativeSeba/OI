@@ -123,5 +123,6 @@ int main(int argc, char* argv[]) {
 
     string exe_path = argv[1];
     check_tests(exe_path); // Wywołanie funkcji sprawdzającej testy
+
     return 0;
 }
