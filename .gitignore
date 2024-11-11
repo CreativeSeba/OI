@@ -11,7 +11,6 @@ CMakeLists.txt.user
 .idea/
 
 # Ignore executable files
-*.exe
 
 # Ignore object files
 *.o
