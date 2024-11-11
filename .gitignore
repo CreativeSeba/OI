@@ -1,6 +1,12 @@
 # Ignore CMake build directories
 cmake-build-debug/
 
+# Ignore CMake files generated during the build
+CMakeFiles/
+CMakeCache.txt
+CMakeLists.txt.user
+*.cmake
+
 # Ignore IDE specific files (JetBrains, etc.)
 .idea/
 
@@ -11,11 +17,7 @@ cmake-build-debug/
 *.o
 *.obj
 
-# Ignore CMake files generated during the build
-CMakeLists.txt.user
-CMakeFiles/
-
-# Ignore any log files
+# Ignore log files
 *.log
 
 # Ignore temporary files created by editors
