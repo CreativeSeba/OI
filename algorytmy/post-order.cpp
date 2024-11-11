@@ -1,0 +1,1 @@
+//Stosowany tam, gdzie najpierw musimy odwiedzić dzieci węzła, np. obliczając wartości w poddrzewach. Obliczanie wartości dla dzieci (poddrzewa).

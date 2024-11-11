@@ -1,0 +1,5 @@
+# ninja log v6
+2	1111	7530348893068946	CMakeFiles/OI.dir/main.cpp.obj	108c1fd40b6ad266
+2	328	7530349870511871	CMakeFiles/OI.dir/algorytmy/dp/code/zaladunek.cpp.obj	55977826817c260d
+329	397	7530349873788057	OI.exe	50861a3a9b375978
+2	1219	7530349545360976	CMakeFiles/OI.dir/algorytmy/bfs.cpp.obj	9c764b1ad079af8c

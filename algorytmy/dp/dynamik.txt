@@ -1,0 +1,71 @@
+Dynamiczne programowanie (DP) to technika rozwiązywania problemów, która polega na rozbijaniu problemu na mniejsze podproblemy oraz zapisywaniu wyników tych podproblemów w celu uniknięcia powtórnych obliczeń. Tablica dp przechowuje rozwiązania dla mniejszych problemów, a wartości w niej są aktualizowane na podstawie rekurencyjnej zależności, która odnosi się do wcześniej obliczonych wyników. Wartości w dp są zazwyczaj obliczane w kolejności od najmniejszych podproblemów do większych.
+
+Kluczowe Elementy
+Rozbijanie Problemu na Mniejsze Podproblemy:
+
+Każda wartość w dp[i] reprezentuje rozwiązanie mniejszego problemu. Należy zrozumieć, w jaki sposób dany problem może być podzielony na mniejsze części.
+Zapis Wyników:
+
+Pamiętamy wcześniej obliczone wartości, aby uniknąć powtórnych obliczeń. Używamy tablicy dp, aby przechować te wyniki.
+Rekurencyjna Zależność:
+
+Wynik dla dp[i] opiera się na wynikach wcześniejszych podproblemów, co można zazwyczaj zapisać w postaci formuły rekurencyjnej, np.:
+dp[i] = f(dp[i-1], dp[i-2], ...)
+Ważne jest, aby zdefiniować, jak poszczególne podproblemy są ze sobą powiązane.
+Kolejność Obliczeń:
+
+Zaczynamy od prostszych przypadków i budujemy rozwiązania dla większych problemów. Zwykle obliczenia są przeprowadzane w kolejności rosnącej, co pozwala na wykorzystanie wcześniej obliczonych wyników.
+Indukcja:
+
+Indukcja jest techniką, która pomaga w uzasadnieniu poprawności rozwiązania. Używamy jej do potwierdzenia, że:
+Bazowy Przypadek: Najpierw udowadniamy, że rozwiązanie działa dla najmniejszych przypadków (np. dla dp[0] lub dp[1]).
+Hipoteza Indukcyjna: Zakładamy, że dla wszystkich mniejszych problemów (do n), nasze rozwiązanie działa poprawnie.
+Krok Indukcyjny: Dowodzimy, że jeśli nasze rozwiązanie działa dla n, to musi także działać dla n + 1.
+Proces Rozwiązywania Problemu
+Aby rozwiązać problem za pomocą dynamicznego programowania, postępuj zgodnie z poniższymi krokami:
+
+Zrozum Problem: Zdefiniuj, co chcesz osiągnąć i jak problem może być rozłożony na mniejsze podproblemy.
+
+Zidentyfikuj Podproblemy: Określ, jakie są mniejsze podproblemy i jak można je połączyć, aby uzyskać rozwiązanie głównego problemu.
+
+Zdefiniuj Bazowe Przypadki: Ustal najmniejsze przypadki, dla których znasz odpowiedzi.
+
+Określ Rekurencyjną Zależność: Zapisz, jak wynik dla każdego podproblemu można uzyskać na podstawie wcześniej obliczonych wyników.
+
+Zastosuj Indukcję: Użyj indukcji, aby potwierdzić, że Twoje rozwiązanie będzie działać dla wszystkich większych przypadków, zaczynając od bazowych przypadków.
+
+Implementuj i Oblicz: Zaimplementuj algorytm, korzystając z tablicy dp, aby przechowywać wyniki podproblemów i obliczać końcowe rozwiązanie.
+
+
+Przykład: Ciąg Fibonacciego
+Podsumowując, dla ciągu Fibonacciego:
+
+Bazowy Przypadek:
+
+F(0) = 0 (jest poprawne).
+F(1) = 1 (jest poprawne).
+Hipoteza Indukcyjna:
+
+Załóżmy, że F(k) jest poprawne dla k ≤ n.
+Krok Indukcyjny:
+
+Musimy wykazać, że F(n+1) = F(n) + F(n-1) jest poprawne.
+Ponieważ przyjęliśmy, że F(n) i F(n-1) są poprawne, możemy obliczyć F(n+1) na ich podstawie.
+
+
+Kroki do Obliczenia Złożoności Czasowej
+Zidentyfikuj Unikalne Stany:
+
+Określ, jakie są unikalne stany w problemie, które będą używane do przechowywania wyników podproblemów (ile czasu zajmuje obliczenie dp[i].
+Na przykład, w problemie plecakowym, stany mogą być reprezentowane jako pary (i, w), gdzie i to liczba przedmiotów, a w to pojemność plecaka.
+Zdefiniuj Wartości, Które Muszą Zostać Obliczone:
+
+Zrozum, ile unikalnych stanów istnieje w problemie. Na przykład, dla problemu plecakowego, liczba stanów wyniesie O(n * W), gdzie n to liczba przedmiotów, a W to maksymalna pojemność plecaka.
+Zbadaj Koszt Obliczenia Każdego Stanu:
+
+Sprawdź, ile operacji musisz wykonać, aby obliczyć wartość dla każdego unikalnego stanu (Cached complexity).
+Na przykład, jeśli w problemie plecakowym dla stanu (i, w) porównujesz różne możliwości (czy dodać dany przedmiot, czy nie), kosztem tej operacji może być O(1).
+Oblicz Łączną Złożoność Czasową:
+
+Po zidentyfikowaniu liczby unikalnych stanów i kosztu obliczenia dla każdego stanu, możesz obliczyć całkowitą złożoność czasową algorytmu DP.
+Zazwyczaj, jeśli masz m unikalnych stanów i koszt obliczeń wynosi O(k) dla każdego stanu, złożoność czasowa będzie wynosić O(m * k).
