@@ -1,0 +1,28 @@
+# Ignore CMake build directories
+cmake-build-debug/
+
+# Ignore IDE specific files (JetBrains, etc.)
+.idea/
+
+# Ignore executable files
+*.exe
+
+# Ignore object files
+*.o
+*.obj
+
+# Ignore CMake files generated during the build
+CMakeLists.txt.user
+CMakeFiles/
+
+# Ignore any log files
+*.log
+
+# Ignore temporary files created by editors
+*~
+*.swp
+
+# Ignore other typical build artifacts
+*.a
+*.so
+*.dSYM
