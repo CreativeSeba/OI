@@ -77,8 +77,10 @@ int main() {
 
     }
 //para.first to indeks zapytania, a para.second to kandydat zapytania
+
+//CZAS ZAMORTYZOWANY
     for (int i = 0; i <= n; i++) {
-        for (auto para: sweep[i]) {
+        for (auto para: sweep[i]) { //może być kilka zapytań na raz
             if (queries[para.first].first) { // sprawdza czy zapytanie sie skonczylo, czyli czy jest b+1 (para.first to indeks zapytania)
                 if (counter[para.second] - queries[para.first].second > (i - queryPos[para.first]) / 2) //i to b, queryPos to a
                     results[para.first] = para.second + 1; //para.second to kandydat zapytania, a para.first to indeks zapytania, czyli kolejnosc w ktorej wpisywalismy
