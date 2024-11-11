@@ -39,14 +39,16 @@ void check_tests(const string& exe_path) {
 //    string output_folder = "C:/Users/lagan/Downloads/"+output;
 //    string input_folder = "C:/Users/lagan/Downloads/walocen/wal/in/";
 //    string output_folder = "C:/Users/lagan/Downloads/walocen/wal/out/";
-    string input_folder = "C:/Users/lagan/Downloads/testy/walrob/input1/";
-    string output_folder = "C:/Users/lagan/Downloads/testy/walrob/output1/";
+    string input_folder = "testy/walrob/input1/";
+    string output_folder = "testy/walrob/output1/";
+    string input_path = "C:/Users/lagan/Downloads/" + input_folder;
+    string output_path = "C:/Users/lagan/Downloads/" + output_folder;
     // Otwórz katalog wejściowy
-    DIR* dir = opendir(input_folder.c_str());
+    DIR* dir = opendir(input_path.c_str());
     struct dirent* entry;
 
     if (dir == nullptr) {
-        cerr << "Nie mozna otworzyc katalogu: " << input_folder << endl;
+        cerr << "Nie mozna otworzyc katalogu: " << input_path << endl;
         return;
     }
 
@@ -59,8 +61,8 @@ void check_tests(const string& exe_path) {
     while ((entry = readdir(dir)) != nullptr) {
         string filename = entry->d_name;
         if (filename.find(".in") != string::npos) { // Filtruj pliki .in
-            string input_file = input_folder + filename;
-            string output_file = output_folder + filename.substr(0, filename.size() - 3) + ".out"; // Odpowiedni plik wyjściowy
+            string input_file = input_path + filename;
+            string output_file = output_path + filename.substr(0, filename.size() - 3) + ".out"; // Odpowiedni plik wyjściowy
 
             // Odczytanie oczekiwanej odpowiedzi
             ifstream expected_output_stream(output_file);
