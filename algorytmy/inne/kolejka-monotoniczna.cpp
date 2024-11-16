@@ -13,7 +13,6 @@ vector<int> maxSlidingWindow(const vector<int>& nums, int k) {
         if (!dq.empty() && dq.front() < i - k + 1) { //i - k + 1 to
             dq.pop_front(); // Remove from the front if it's out of the current window
         }
-
         // Step 2: Remove elements from the back of the deque while nums[i] is greater
         //przesuwamy sie od tylu, usuwamy elementy, ktore sa mniejsze od obecnego, usuwamy indeksy, bo nie beda juz potrzebne, czyli ogolnie jest O(2n)
         while (!dq.empty() && nums[dq.back()] < nums[i]) {
