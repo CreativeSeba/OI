@@ -1,95 +1,75 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <numeric>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-// Struktura przechowująca przedmioty
-struct Item {
-    int valueA;
-    int valueB;
-};
-
 int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+
+//    string inputFileName = "C:\\Users\\lagan\\Downloads\\sprocen\\spr\\in\\spr2ocen.in";
+//    ifstream inputFile(inputFileName);
+
     int n;
     cin >> n;
-    vector<Item> items(n);
-    vector<int> a(n), b(n);
+    vector<int> a(n), b(n), result(n, 0);
+    long long sumaBajtyna = 0, sumaBitek = 0;
 
-    // Wczytanie wartości dla Bajtyny i Bitka
-    for (int i = 0; i < n; ++i) {
-        cin >> items[i].valueA;
+    // Read values for Bajtyna and Biteka
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+        sumaBajtyna += a[i];
     }
-    for (int i = 0; i < n; ++i) {
-        cin >> items[i].valueB;
-    }
-
-    long long totalA = 0, totalB = 0;
-    for (int i = 0; i < n; ++i) {
-        totalA += items[i].valueA;
-        totalB += items[i].valueB;
+    for (int i = 0; i < n; i++) {
+        cin >> b[i];
+        sumaBitek += b[i];
     }
 
-    // Tablica DP, przechowuje informacje o możliwych różnicach sum
-    // offset pozwala uniknąć ujemnych indeksów
-    const int offset = 500000;
-    vector<vector<bool>> dp(n + 1, vector<bool>(2 * offset + 1, false));
-    vector<vector<int>> assignment(n + 1, vector<int>(2 * offset + 1, -1));
+    // Create a vector of pairs to hold the differences and indices
+    vector<pair<int, int>> items(n);
+    for (int i = 0; i < n; i++) {
+        items[i] = {b[i] - a[i], i};  // Store the difference and original index
+    }
 
-    dp[0][offset] = true; // Początkowy stan: żadnych przedmiotów, różnica sum to 0
-
-    // Dynamiczne przypisywanie przedmiotów
-    for (int i = 0; i < n; ++i) {
-        for (int diff = -offset; diff <= offset; ++diff) {
-            int index = diff + offset;
-            if (!dp[i][index]) continue;
-
-            // Przypadek przypisania przedmiotu i do Bajtyny
-            int newDiff = diff + items[i].valueA - items[i].valueB;
-            if (newDiff >= -offset && newDiff <= offset) {
-                dp[i + 1][newDiff + offset] = true;
-                assignment[i + 1][newDiff + offset] = 0; // 0 - przypisane do Bajtyny
-            }
-
-            // Przypadek przypisania przedmiotu i do Bitka
-            newDiff = diff - items[i].valueA + items[i].valueB;
-            if (newDiff >= -offset && newDiff <= offset) {
-                dp[i + 1][newDiff + offset] = true;
-                assignment[i + 1][newDiff + offset] = 1; // 1 - przypisane do Bitka
-            }
+    // Sort by difference (descending), then by index (ascending)
+    sort(items.begin(), items.end(), [](const pair<int, int>& a, const pair<int, int>& b) {
+        if (a.first == b.first) {
+            return a.second < b.second; // Sort by index if differences are equal
         }
+        return a.first < b.first; // Sort by difference otherwise
+    });
+
+    // Precompute minimum values from the left for Bajtyna and right for Biteka
+    vector<int> minBajtyna(n), minBitek(n);
+    minBajtyna[0] = a[items[0].second];
+    for (int i = 1; i < n; i++) {
+        minBajtyna[i] = min(minBajtyna[i - 1], a[items[i].second]);
+    }
+    minBitek[n - 1] = b[items[n - 1].second];
+    for (int i = n - 2; i >= 0; i--) {
+        minBitek[i] = min(minBitek[i + 1], b[items[i].second]);
     }
 
-    // Szukanie rozwiązania
-    int targetDiff = -1;
-    for (int diff = 0; diff <= offset; ++diff) {
-        if ((dp[n][diff + offset] || dp[n][offset - diff]) &&
-            (totalA >= totalB - diff && totalB >= totalA - diff)) {
-            targetDiff = (dp[n][diff + offset] ? diff : -diff);
+    // Assignment of items
+    long long bajtyna = sumaBajtyna, bitek = 0;
+    for (int i = 0; i < n; i++) {
+        int idx = items[i].second;  // Get the original index
+        bajtyna -= a[idx];
+        bitek += b[idx];
+
+        // Check the jealousy conditions
+        if (bajtyna >= sumaBajtyna - bajtyna - minBajtyna[i] &&
+            bitek >= sumaBitek - bitek - minBitek[i + 1]) {
+            result[idx] = 1;  // Assign to Bajtyna
             break;
-        }
-    }
-
-    // Rekonstrukcja przydziału przedmiotów
-    vector<int> result(n, 0);
-    int currentDiff = targetDiff + offset;
-    for (int i = n; i > 0; --i) {
-        if (assignment[i][currentDiff] == 0) {
-            result[i - 1] = 0;
-            currentDiff -= (items[i - 1].valueA - items[i - 1].valueB);
         } else {
-            result[i - 1] = 1;
-            currentDiff += (items[i - 1].valueA - items[i - 1].valueB);
+            result[idx] = 1;  // Assign to Biteka
         }
     }
 
-    // Wypisz wynik
-    for (int i = 0; i < n; ++i) {
+    // Output results
+    for (int i = 0; i < n; i++) {
         cout << result[i] << " ";
     }
     cout << endl;
-
 
     return 0;
 }

@@ -1,8 +1,8 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-const int S = 1 << 20; // Size for segment tree
-pair<int, int> t[2 * S + 10]; // Segment tree array
+const int S = 1 << 20;
+pair<int, int> t[2 * S + 10];
 
 pair<int, int> lacz(pair<int, int> s1, pair<int, int> s2) {
     if (s1.first == s2.first)
@@ -12,17 +12,18 @@ pair<int, int> lacz(pair<int, int> s1, pair<int, int> s2) {
     else if (s1.second < s2.second)
         return {s2.first, s2.second - s1.second};
     else
-        return {-1, 0};  // No dominant element
+        return {-1, 0};
 }
 
 void build() {
-    for (int i = S - 1; i > 0; i--) {
-        t[i] = lacz(t[i * 2], t[i * 2 + 1]);
+    for (int i = S - 1;
+         i > 0; i--) { // S-1 bo to jest pierwszy wierzcholek, ktory nie jest lisciem, bo liscie sa od S do S + n-1
+        t[i] = lacz(t[i * 2], t[i * 2 + 1]); // to są dzieci
     }
 }
 
 pair<int, int> Query(int a, int b) {
-    a += S; // Shift index to segment tree representation
+    a += S;
     b += S;
     pair<int, int> wynik = {-1, 0};
 
@@ -46,60 +47,53 @@ int main() {
     cin.tie(0), cout.tie(0);
 
     int n, m, a, b;
-    cin >> n >> m; // Read number of elements and queries
+    cin >> n >> m;
 
-    // Initialize structures
-    vector<pair<int, int>> sweep[n + 1]; // n + 1, bo potem b, bedzie b + 1, zeby sprawdzac czy to koniec przedzialu
-    vector<int> counter(n, 0); // Count occurrences of each value
-    vector<int> results(m, 0); // Store results for each query
-    int queryPos[m]; // Track starting positions of queries
-    pair<bool, int> queries[m]; // Store query status and count
+    vector<pair<int, int>> otw[n], zam[n];
+    vector<int> counter(n, 0); // liczy wystapienia kazdej wartosci
+    vector<int> results(m, 0); // wyniki dla kazdego zapytania
+    int queryPos[m]; // poczatkowe pozycje zapytan, czyli "a"
+    int queries[m]; // status zapytania i licznik
 
-    // Read input data and initialize the segment tree
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++) { // zamieniamy na 0-indexed
         cin >> t[i + S].first;
-        t[i + S].first--; // Convert to 0-based index
-        t[i + S].second = 1; // Initialize the count of each element
+        t[i + S].first--;
+        t[i + S].second = 1;
     }
 
-    build(); // Build the segment tree
+    build();
 
-    // Process each query
     for (int i = 0; i < m; i++) {
         cin >> a >> b;
-        a--, b--; // Convert to 0-based indexing
-        queryPos[i] = a; // Store starting position of the query
+        a--, b--;
+        queryPos[i] = a;
 
         pair<int, int> ans = Query(a, b);
-        if (ans.first == -1) // If no dominant element found
+        if (ans.first == -1) {// nie dodajemy zapytania, bo nie ma dominujacego elementu, jesli nie wystepuje to po prostu bedzie 0, bo w counterze jest 0
             continue;
-
-        // Add query results to the sweep vector
-        sweep[a].push_back({i, ans.first});
-        sweep[b + 1].push_back({i, ans.first});
-
+        }
+        otw[a].push_back({i, ans.first}); // początek zdarzenia dla zapytania
+        zam[b].push_back({i, ans.first}); // zakonczenie zapytania
     }
 
-    // Count results for each index
-    for (int i = 0; i <= n; i++) {
-        for (auto para : sweep[i]) {
-            if (queries[para.first].first) { // If query was previously checked
-                if (counter[para.second] - queries[para.first].second > (i - queryPos[para.first]) / 2)
-                    results[para.first] = para.second + 1; // Store result for this query.
-            } else {
-                queries[para.first] = {true, counter[para.second]}; // Initialize query
+    // CZAS ZAMORTYZOWANY
+    for (int i = 0; i < n; i++) {
+        for (auto para: otw[i]) { // obsługa początków przedziałów
+            queries[para.first] = counter[para.second]; // kiedy spotkamy a
+        }
+        //liczymy ile jest wystpaien po otw, bo queries ptrzetrymuje ilosc wystpien do otw, czyli bez pierwszego elelmntu, dopiero zam zlicza calosc, odejmuac to ile bylo przed rozpoczeciem przedzialu
+        counter[t[i + S].first]++; // zwieksza nasz licznik o 1 kiedy przechodzimy od lewej do prawej
+        for (auto para : zam[i]) { // obsługa końców przedziałów
+            if (counter[para.second] - queries[para.first] > (i - queryPos[para.first] + 1)/ 2) { // i to b, queryPos to a. i - queryPos[para.first] + 1) / 2 jest to liczba elementow w przedziale, czyli ile jest elementow w przedziale. w nawiasie jest +1 bo dzielenie przez 2 zaokragla w dol, wiec jak sa nieparzyste to by byly zle wyniki
+                results[para.first] = para.second + 1; // para.second is the candidate
             }
         }
-        if (i < n) {
-            counter[t[i + S].first]++; // Increment count for current value
-        }
+
     }
 
-    // Output the results for each query
-    for (int i = 0; i < m; i++)
+    for (int i = 0; i < m; i++) {
         cout << results[i] << "\n";
-
+    }
 
     return 0;
 }
-

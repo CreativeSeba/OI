@@ -4,4 +4,4 @@ project(OI)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(OI
-        algorytmy/dp/code/zaladunek.cpp)
+        algorytmy/sweeping/sweeping-dominating.cpp)

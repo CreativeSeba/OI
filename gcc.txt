@@ -1,0 +1,7 @@
+https://winlibs.com/
+
+1. Zaawansowane ustawienia systemu
+2. Zmienne środowiskowe
+3. Zmienne systemowe
+4. Dodaj do zmiennej PATH ściężkę do folderu mingw-w64
+5. gcc -v (sprawdzenie czy działa)
