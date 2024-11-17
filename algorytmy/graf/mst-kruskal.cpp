@@ -6,13 +6,15 @@ using namespace std;
 
 const int MAX = 1e6 - 1;  // Maximum number of nodes
 int root[MAX], nodeRank[MAX];
-pair <pair<long long, int>, pair<int, int >> p[MAX];  // jesli chcesz sam koszt to usun pierwsza pare i zmien na long long, bo int to indekst wierzcholkk przed sortowaniem
+pair <pair<long long, int>, pair<int, int >> p[MAX];  // jesli chcesz sam koszt to usun pierwsza pare i zmien na long long, bo int to indeksy wierzcholka przed sortowaniem
 vector<int> mstEdges;  // Vector to store the indices of edges in the MST
 
 // Find the parent with path compression
 //path compresion wywoluje sie tylko raz, bo jak raz sie wywola to juz bedzie rootem i wywoluje sie tylko podczas wywolywania union, nie po operacji, tylko na poczatku
 //path compreswion nie dziala dla calego disjoint set, tylko dla jednego elementu(tego o ktorego root sie pytamy), bo jakby dla calego to bys musial przepisac wszystkie elementy, a tak to tylko dla jednego
 //reukrencja maksymalnie, zajmuje 4 operacje (funkcja akermana)
+
+//CZAS ZAMORTYZOWANY
 int parent(int a) {
     if (root[a] != a) { //tylko sie wywoluje kiedy a nie jest rootem
         root[a] = parent(root[a]);  // Path compression

@@ -1,6 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -32,6 +30,8 @@ int max_weight(int k, int s, vector<int>& weights) {
 }
 
 int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(0), cout.tie(0);
     int n, k, s;
     cin >> n >> k >> s;
     vector<int> weights(n);

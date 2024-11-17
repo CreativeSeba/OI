@@ -38,8 +38,6 @@ int countReachable(int sccId, vector <vector<int>> &adj, vector<bool> &visited, 
 }
 
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(0), cout.tie(0);
 
     int n, m;
     cin >> n >> m;
@@ -112,20 +110,6 @@ int main() {
     for (int i = 0; i < n; i++) {
         cout << sccReachCount[sccId[i]] - 1 << endl;
     }
-//    for (int i = 0; i < SCCs.size(); i++) {
-//        cout << "SCC " << i + 1 << ": ";
-//        for (int j: SCCs[i]) {
-//            cout << j + 1 << " "; // Print nodes in the SCC
-//        }
-//        cout << "\n";
-//    }
-//
-//    cout << "Condensed graph edges (SCCs as nodes):\n";
-//    for (int i = 0; i < SCCs.size(); i++) {
-//        for (int j: SCCGraph[i]) {
-//            cout << "SCC " << i + 1 << " -> SCC " << j + 1 << "\n"; // Print edges between SCCs
-//        }
-//    }
 
     return 0;
 }

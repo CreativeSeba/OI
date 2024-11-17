@@ -58,7 +58,7 @@ int main() {
     //ogolnie sweepingu sie uzywa tylko do zliczania czegos, tzn nie zliczamy wszystkiego, bo to nie ma sensu, zliczamy cos konkretnego.
     //sweeping zawsze działa z jakąs inna strukturą, najczesciej drzewem przedziałowym
 
-    //CZAS ZAMORTYZOWANY
+    //CZAS ZAMORTYZOWANY O(n+m)
     for (int i = 0; i < MAXN; i++) {
         for (auto &p : otw[i]) {
             Insert(1, 0, S - 1, p.first, p.second, 1);

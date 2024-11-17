@@ -1,3 +1,1 @@
-//
-// Created by lagan on 06.11.2024.
-//
+//Czas zamotyzowany polega na tym, kod wyglada jakby cas byl wiekszy niz faktycznie jest, tzn. ze pojedyncza operacja moze zajac najgorsazy czas, ale ogolny czas wynosi tyle samo co czas dla pojedynczej operacji. Czyli jesli pojedyncza operacja wynosi O(n), to ogolny czas wynosi O(n), ale pojedyncza operacja moze zajac wiecej czasu niz O(1). W przypadku union-find, pojedyncza operacja moze zajac O(n), ale ogolny czas wynosi O(n), bo path compression wywoluje sie tylko raz, a nie dla calego disjoint set. W przypadku zaladunku, pojedyncza operacja moze zajac O(n), ale ogolny czas wynosi tez O(n)

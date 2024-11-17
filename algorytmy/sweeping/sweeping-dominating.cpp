@@ -78,7 +78,7 @@ int main() {
 
     // sweeping dominating się rozni od tego w sweeping, bo tu przy okazji zliczamy wystapienia DANEGO elementu na tablicy, w ukladzie wspolrzednych elementy to punkty a wiec wszystkie maja wartosc 1
 
-    // CZAS ZAMORTYZOWANY
+    // CZAS ZAMORTYZOWANY O(n+m)
     for (int i = 0; i < n; i++) {
         for (auto para: otw[i]) { // obsługa początków przedziałów
             queries[para.first] = counter[para.second]; // kiedy spotkamy a
