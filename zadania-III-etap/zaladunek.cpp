@@ -31,7 +31,7 @@ int main() {
     //CZAS ZAMORTYZOWANY O(n)
     for (int i = 1; i <= n; i++) {
         int ilepociagow = i - lk - 1;  // Liczba pociągów między aktualnym a ostatnim, odejmujemy 1, zeby nie liczyć obecnego pociagu
-        // Znajdź najlepszy moment na wyjazd bieżącego pociągu
+        // Czas zamortyzowany, bo musimy miec dla kazdego obliczony najlepszy czas, dlatego przerywamy petle jak juz tego czasu nie ma
         while (lk < i) {
             //jeśli dp[lk] + ilepociagow jest większe od t[i], to daltego dodajemy jeszcze raz ilepociagow, bo pociągi muszą na siebie jeszcze czekać na dole
             //jesli dp[lk] + ilepociagow jest wieksze, to znaczy ze i-ty pociag musi poczekac na pociagi, ktore juz wyruszyly, jesli t[i] jest wieksze, to znaczy ze i-ty pociag moze wyruszyc od razu

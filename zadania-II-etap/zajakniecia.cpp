@@ -56,6 +56,7 @@ int main() {
                 // - Albo jeśli A[i] == B[j] i spełnione są dodatkowe warunki na zająknięcie.
                 bool isValid = false; // sprawdza czy można zwiększyć długość zająknięcia
 
+                //jesli dp[j-1] > dp[j] to zawsze dp[j-1[ jest wieksze o 1 od dp[j]
                 if (dp[j - 1] > dp[j]) { // jesli dp[j-1] > dp[j] to znaczy ze dp[j] ma miejsce by byc zwiększony
                     isValid = true;  // Zająknięcie w B może być wydłużone
                 }
