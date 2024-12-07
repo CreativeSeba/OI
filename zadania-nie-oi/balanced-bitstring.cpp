@@ -1,4 +1,4 @@
-//https://szkopul.edu.pl/problemset/problem/A7ZI0Wwn6tTiCJoYblblTAqz/site/?key=statement
+//https://codeforces.com/contest/1405/problem/C
 #include <bits/stdc++.h>
 
 using namespace std;
