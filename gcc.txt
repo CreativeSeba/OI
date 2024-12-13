@@ -1,7 +1,11 @@
 https://winlibs.com/
 
+Wersja i komenda: https://www.oi.edu.pl/l/32oi_ustalenia_techniczne/
 1. Zaawansowane ustawienia systemu
 2. Zmienne środowiskowe
 3. Zmienne systemowe
 4. Dodaj do zmiennej PATH ściężkę do folderu mingw-w64
-5. gcc -v (sprawdzenie czy działa)
+5. Przeklikaj OK
+6. Zrestartuj CLion
+7. gcc -v (sprawdzenie czy działa)
+
