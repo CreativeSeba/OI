@@ -1,0 +1,13 @@
+I etap:
+
+II etap:
+drogi rowerowe - zadania-II-etap/drogi-rowerowe.cpp
+zajakniecia - zadania-II-etap/zajakniecia.cpp
+
+III etap:
+rezerwacja sal wykladowych - zadania-III-etap/rezerwacja-sal-wykladowych.cpp
+zaladunek - zadania-III-etap/zaladunek.cpp
+
+Nie OI:
+colored rectangles - zadania-nie-oi/colored-rectangles.cpp
+
