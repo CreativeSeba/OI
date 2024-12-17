@@ -45,7 +45,7 @@ long long Query(int v, int p, int k, int a, long long b) {
 
 int main() {
     ios_base::sync_with_stdio(false);
-    cin.tie(0), cout.tie(0);
+    cin.tie(nullptr), cout.tie(nullptr);
     int a, b;
 
     Insert(1, 0, S - 1, a, b, 1); //"tablica" zaczyna sie od 0, wiec ostatni element to S - 1. a, b, p i k nie odnosza sie do tablicy, tylko do przedzialow do tablicy odnosi sie v

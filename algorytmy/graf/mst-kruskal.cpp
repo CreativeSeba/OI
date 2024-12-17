@@ -63,7 +63,8 @@ long long kruskal(int edges, int nodes) {
 
 int main() {
     ios_base::sync_with_stdio(false);
-    cin.tie(0), cout.tie(0);
+    cin.tie(nullptr), cout.tie(nullptr);
+
     long long minCost;
     int n, m; // Number of nodes and edges
     cin >> n >> m;  // Read number of nodes and edges

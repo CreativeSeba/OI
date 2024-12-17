@@ -7,7 +7,7 @@ const long long INF = 1e10;
 
 int main() {
     ios_base::sync_with_stdio(false);
-    cin.tie(0), cout.tie(0);
+    cin.tie(nullptr), cout.tie(nullptr);
 
     int n, s;
     cin >> n >> s;

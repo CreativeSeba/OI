@@ -32,7 +32,8 @@ vector<int> maxSlidingWindow(const vector<int>& nums, int k) {
 
 int main() {
     ios_base::sync_with_stdio(false);
-    cin.tie(0), cout.tie(0);
+    cin.tie(nullptr), cout.tie(nullptr);
+
     vector<int> nums = {1, 3, -1, -3, 5, 3, 6, 7};
     int k = 3;
 

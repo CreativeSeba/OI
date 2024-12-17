@@ -38,7 +38,7 @@ int Query(int v, int p, int k, int a, int b) {
 
 int main() {
     ios_base::sync_with_stdio(false);
-    cin.tie(0), cout.tie(0);
+    cin.tie(nullptr), cout.tie(nullptr);
 
     cin >> s >> w >> n;
     vector<pair<int, int>> otw[MAXN], zam[MAXN+s];

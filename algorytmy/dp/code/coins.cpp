@@ -23,7 +23,7 @@ int countWaysToMakeChange(int coins[], int numCoins, int target) {
 
 int main() {
     ios_base::sync_with_stdio(false);
-    cin.tie(0), cout.tie(0);
+    cin.tie(nullptr), cout.tie(nullptr);
     int coins[] = {1, 2, 5}; // Example coin denominations
     int numCoins = sizeof(coins) / sizeof(coins[0]); // Number of different coins
     int target = 6; // Target amount

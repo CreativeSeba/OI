@@ -35,7 +35,8 @@ double binary_search(const vector<double>& acc, int n) {
 
 int main() {
     ios_base::sync_with_stdio(false);
-    cin.tie(0), cout.tie(0);
+    cin.tie(nullptr), cout.tie(nullptr);
+
     cout << fixed << setprecision(1);
 
     int test;

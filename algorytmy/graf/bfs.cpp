@@ -30,7 +30,7 @@ void BFS(int startNode, vector <vector<int>> &adj, vector<bool> &visited) {
 
 int main() {
     ios_base::sync_with_stdio(false);
-    cin.tie(0), cout.tie(0);
+    cin.tie(nullptr), cout.tie(nullptr);
     // Number of nodes (vertices) in the graph
     int n = 6;
 

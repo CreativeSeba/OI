@@ -27,7 +27,8 @@ int binary_search(const vector<int>& list, int goal) {
 
 int main() {
     ios_base::sync_with_stdio(false);
-    cin.tie(0), cout.tie(0);
+    cin.tie(nullptr), cout.tie(nullptr);
+
     vector<int> list = {2, 3, 4, 10, 40};
     int goal = 10;
 

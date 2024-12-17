@@ -42,7 +42,8 @@ void mergeSort(vector<int>& arr) {
 
 int main() {
     ios_base::sync_with_stdio(false);
-    cin.tie(0), cout.tie(0);
+    cin.tie(nullptr), cout.tie(nullptr);
+
     vector<int> arr = {38, 27, 43, 3, 9, 82, 10};
 
     cout << "Unsorted array:" << endl;
