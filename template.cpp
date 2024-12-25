@@ -3,6 +3,14 @@
 using namespace std;
 
 int main() {
+    //  .  : Do dostępu do członków obiektu (instancji klasy).
+    //  -> : Do dostępu do członków obiektu przez pointer.
+    //  :: : Do dostępu do elementów globalnych, statycznych, lub do rozwiązywania
+    //Operator :: w C++ jest operatorem zasięgu (ang. scope resolution operator), który pozwala na wyraźne wskazanie, do jakiej przestrzeni nazw lub zasięgu należy dany element.
+    //operator "::" jest używany do stattycznych badz stalych elementow klasy, bez instancji. funkcja sync_with_stdio jest statyczna, wiec wywoluje sie ja przez "::"
+    //ios_base to klasa bazowa w bibliotece standardowej C++, która zapewnia podstawowe funkcje i ustawienia dla strumieni wejścia i wyjścia (np. cin, cout, ifstream, ofstream).
+    //ios_base, cin i cout to są klasy. "<<", ">>" to są zoverloadowane operatory
+
     // Użycie ios_base::sync_with_stdio(false); przyspiesza operacje I/O,
     // ponieważ wyłącza synchronizację pomiędzy strumieniami C++ (cout, cin) a strumieniami C (printf, scanf).
     // Dzięki temu operacje na cout i cin działają niezależnie, co eliminuje dodatkowy narzut związany z synchronizacją.

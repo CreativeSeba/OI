@@ -4,6 +4,7 @@
 
 using namespace std;
 
+
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr), cout.tie(nullptr);
@@ -11,16 +12,18 @@ int main() {
     int r, g, b;
     cin >> r >> g >> b;
 
-    vector<int> red(r), green(g), blue(b);
+    vector<int> red(r+1), green(g+1), blue(b+1);
     vector<vector<vector<int>>> dp(r+1, vector<vector<int>>(g+1, vector<int>(b+1, 0)));
 
-    for (int i = 0; i < r; i++) cin >> red[i];
-    for (int i = 0; i < g; i++) cin >> green[i];
-    for (int i = 0; i < b; i++) cin >> blue[i];
+    for (int i = 1; i <= r; i++) cin >> red[i];
+    for (int i = 1; i <= g; i++) cin >> green[i];
+    for (int i = 1; i <= b; i++) cin >> blue[i];
 
     sort(red.rbegin(), red.rend());
     sort(green.rbegin(), green.rend());
     sort(blue.rbegin(), blue.rend());
+
+    red[0] = 0, green[0] = 0, blue[0] = 0;
 
     for (int i = 0; i <= r; i++) {
         for (int j = 0; j <= g; j++) {

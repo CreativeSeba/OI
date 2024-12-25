@@ -4,4 +4,5 @@ project(OI)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(OI
-        zadania-nie-oi/colored-rectangles.cpp)
+        zadania-nie-oi/colored-rectangles.cpp
+)

@@ -1,3 +1,4 @@
+//https://szkopul.edu.pl/problemset/problem/ypg8JeDVvTf7vEUypRZ2LxiZ/site/?key=statement
 #include "kaslib.h"
 #include <iostream>
 #include <vector>
