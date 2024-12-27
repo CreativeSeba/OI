@@ -69,3 +69,37 @@ Oblicz Łączną Złożoność Czasową:
 
 Po zidentyfikowaniu liczby unikalnych stanów i kosztu obliczenia dla każdego stanu, możesz obliczyć całkowitą złożoność czasową algorytmu DP.
 Zazwyczaj, jeśli masz m unikalnych stanów i koszt obliczeń wynosi O(k) dla każdego stanu, złożoność czasowa będzie wynosić O(m * k).
+
+DP nie oblicza stanów optymalnych, gdy w definicji stanu istnieją lokalne ograniczenia, takie jak liczba elementów, które musisz użyć.
+W takich przypadkach tablica dp przechowuje wartości lokalne, które mogą nie uwzględniać najlepszej strategii globalnej.
+Ograniczenia powodujące brak globalnego maksimum w DP:
+
+1. Lokalna liczba elementów (np. ilość patyków do użycia):
+
+   Jeśli stan dp[i][j][k] oznacza "najlepszy wynik przy dokładnie i, j, k elementach", to nie uwzględnia przypadków, gdzie używasz mniejszej liczby elementów, co może prowadzić do lepszego wyniku.
+
+2. Ograniczenie decyzji lokalnych:
+
+   Stan dp[i][j][k] działa w obrębie lokalnego podproblemu: użycie konkretnych i, j, k. Nie uwzględnia innych możliwych rozkładów elementów.
+
+3. Elastyczność w pomijaniu elementów:
+
+   Jeśli problem pozwala pominąć pewne elementy, to najlepszy wynik może być osiągnięty przy mniejszej liczbie elementów niż maksymalna (np. używając tylko i−1, j−1, k).
+
+
+W dynamicznym programowaniu przechodzimy przez tablicę dp od tyłu, gdy chcemy uniknąć nadpisywania wyników, które są jeszcze potrzebne w trakcie tej samej iteracji.
+
+1. **Zachowanie poprawności obliczeń**:
+   Przechodząc przez tablicę dp od tyłu (np. od największej możliwej wagi do najmniejszej), zapewniamy, że nie nadpisujemy wyników, które jeszcze będą wykorzystane w tej samej iteracji.
+
+   Na przykład, jeśli w tej samej iteracji próbujemy zaktualizować dp[i][j] (gdzie i to liczba klocków, a j to waga), to przetwarzając dp od tyłu, mamy pewność, że wcześniej obliczone wartości dp[i-1][j-w] (gdzie w to waga klocka) są już dostępne i nie zostały nadpisane przez nowo obliczaną wagę dla dp[i][j].
+
+2. **Przykład z nadpisywaniem**:
+   Załóżmy, że mamy klocki o wagach 2, 3 i 4, a także limit wagi pudełka s = 5 i maksymalną liczbę klocków k = 2. Przechodząc przez dp od przodu, moglibyśmy przypadkowo nadpisać wartości w dp, które są jeszcze potrzebne do obliczeń w tej samej iteracji, co może prowadzić do nieprawidłowych wyników.
+
+   Jeśli iterujemy od tyłu, najpierw przetwarzamy większe wagi, a potem przechodzimy do mniejszych, dzięki czemu każdą wagę obliczamy na podstawie wcześniej obliczonych wartości. Dzięki temu mamy pewność, że dla każdego dp[i][j] aktualizujemy wynik tylko raz, bez ryzyka nadpisania ważnych wyników.
+
+3. **Ogólna zasada**:
+   Przechodzimy od tyłu, aby najpierw przetworzyć wyniki dla większych wag i liczby klocków, zanim przejdziemy do mniejszych. Dzięki temu zapewniamy, że obliczenia w tablicy dp są spójne i nie nadpisujemy wyników, które muszą zostać zachowane dla późniejszych obliczeń.
+
+Podsumowując, przechodzenie przez dp od tyłu jest szczególnie ważne, gdy w tej samej iteracji aktualizujemy różne wartości w tablicy dp i chcemy uniknąć nadpisywania wyników, które mogą być jeszcze potrzebne do obliczeń.

@@ -11,6 +11,7 @@ int max_weight(int k, int s, vector<int>& weights) {
     dp[0] = 0; // Do osiągnięcia masy 0 potrzebujemy 0 klocków
 
     // Przechodzimy przez każdy klocek
+    //j to sila a dp[j] to ilosc klockow potrzebna do osiagniecia sily
     for (int w : weights) {
         // Przetwarzamy tablicę dp od tyłu, aby nie nadpisać wyników, bo może byc ze uzyejmy dwa razy ten sam klocek, np. dp[2] = 1, dp[4] = 2, dp[6] = 3, itd, wtedy uzywamy klocka 2 kilka razy i to jest bledne
         // iteracja od tylu, pozwala na to, ze dodajemy klocek tylko wtedy kiedy nie bylismy w stanie osiagnac tej masy wczesniej, wiec uzywamy go raz dla kazdej kombinacji
