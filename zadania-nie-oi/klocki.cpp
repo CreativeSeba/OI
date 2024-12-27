@@ -10,6 +10,7 @@ int max_weight(int k, int s, vector<int>& weights) {
     vector<int> dp(s + 1, INF);
     dp[0] = 0; // Do osiągnięcia masy 0 potrzebujemy 0 klocków
 
+    int ans = 0;
     // Przechodzimy przez każdy klocek
     //j to sila a dp[j] to ilosc klockow potrzebna do osiagniecia sily
     for (int w : weights) {
@@ -18,17 +19,14 @@ int max_weight(int k, int s, vector<int>& weights) {
         for (int j = s; j >= w; --j) {
             // Aktualizujemy dp[j] minimalną liczbą klocków potrzebnych do osiągnięcia masy j
             dp[j] = min(dp[j], dp[j - w] + 1);
+            // Zaktualizuj zmienną ans, aby trzymała najlepszy wynik
+            if (dp[j] <= k) {
+                ans = max(ans, j); // Maksymalna osiągalna waga
+            }
         }
     }
 
-    // Szukamy największej możliwej masy, którą można osiągnąć przy użyciu co najwyżej k klocków
-    for (int j = s; j >= 0; --j) {
-        if (dp[j] <= k) {
-            return j; // Zwracamy największą osiągalną masę
-        }
-    }
-
-    return 0; // Jeśli żadna masa nie jest osiągalna
+    return ans;
 }
 
 int main() {
