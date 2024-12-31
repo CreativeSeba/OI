@@ -139,21 +139,26 @@ int main() {
         long long result = 1;
         for (const auto& scc : SCCs) {
             bool hasZeroInSCC = false, hasOneInSCC = false;
+            cout << "SCC: ";
             for (int node : scc) {
                 if (node < idx) {
                     for (const auto& [var, startIdx] : variableIndex) {
                         if (node >= startIdx && node < startIdx + lengths[var - 'a']) {
+                            cout << var << (node - startIdx + 1) << " ";
                             break;
                         }
                     }
                 } else {
                     if (hasZero && node == idx) {
+                        cout << "0 ";
                         hasZeroInSCC = true;
                     } else if (hasOne && node == idx + (hasZero ? 1 : 0)) {
+                        cout << "1 ";
                         hasOneInSCC = true;
                     }
                 }
             }
+            cout << "\n";
             if (!hasZeroInSCC && !hasOneInSCC) {
                 result *= 2;
             } else if (hasZeroInSCC && hasOneInSCC) {
