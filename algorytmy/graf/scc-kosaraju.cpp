@@ -51,7 +51,7 @@ int main() {
         cin >> u >> v;
         adj[u - 1].push_back(v - 1);
         transposed[v - 1].push_back(u - 1);
-        edges[i] = {u - 1, v - 1}; //jesli nie uzyjem edges to potem w SCCGraph bedziemy musieli przechodzic po wszystkich krawedziach, co bedzie mniej wydajne
+        edges[i] = {u - 1, v - 1}; //jesli nie uzyjemy edges to potem w SCCGraph bedziemy musieli przechodzic po wszystkich krawedziach, co bedzie mniej wydajne
     }
 
     // Step 1: Perform DFS to get nodes in finishing order
