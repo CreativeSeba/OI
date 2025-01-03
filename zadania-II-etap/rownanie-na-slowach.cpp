@@ -5,6 +5,99 @@ using namespace std;
 
 //wynik to 2 do potegi scc bez 1 lub 0, bo jesli w scc jest 0 lub 1, to kazdy node musi byc 1 lub 0. Jesli natomiast w SCC jest 0 i 1, to jest 0 rozwiazan, bo jest sprzecznosc
 
+class BigInt {
+private:
+    vector<uint32_t> digits; // Each element stores a part of the number
+    static const uint64_t BASE = 1000000000; // Base 10^9, used for arithmetic operations
+    static const int BASE_DIGITS = 9; // Number of digits in the base, used for string formatting
+
+    // Helper function to remove leading zeros
+    void trim() {
+        while (!digits.empty() && digits.back() == 0)
+            digits.pop_back();
+    }
+
+public:
+    // Constructors
+    BigInt() : digits(1, 0) {}
+    BigInt(uint64_t value) { *this = value; }
+    BigInt(const string &str) { *this = str; }
+
+    // Assignment operators
+    BigInt &operator=(uint64_t value) {
+        digits.clear();
+
+        do {
+            digits.push_back(value % BASE);
+            value /= BASE;
+        } while (value > 0);
+        return *this;
+    }
+
+    BigInt &operator=(const string &str) { //Passed by reference, because strings are large and const, because we don't want to change the value of the string
+        digits.clear();
+        int len = str.length();
+        for (int i = len; i > 0; i -= BASE_DIGITS) {
+            int end = i;
+            int start = max(0, i - BASE_DIGITS);
+            digits.push_back(stoul(str.substr(start, end - start)));
+        }
+        trim();
+
+        return *this;
+    }
+
+
+    // Multiplication operator
+    BigInt operator*(const BigInt &other) const {
+        BigInt result;
+        result.digits.resize(digits.size() + other.digits.size());
+        for (size_t i = 0; i < digits.size(); ++i) {
+            uint64_t carry = 0;
+            for (size_t j = 0; j < other.digits.size() || carry; ++j) {
+                uint64_t prod = result.digits[i + j] + digits[i] * 1ULL * (j < other.digits.size() ? other.digits[j] : 0) + carry;
+                result.digits[i + j] = prod % BASE;
+                carry = prod / BASE;
+            }
+        }
+        result.trim();
+        return result;
+    }
+
+    // Comparison operators
+    bool operator<(const BigInt &other) const {
+        if (digits.size() != other.digits.size())
+            return digits.size() < other.digits.size();
+        for (int i = digits.size() - 1; i >= 0; --i) {
+            if (digits[i] != other.digits[i])
+                return digits[i] < other.digits[i];
+        }
+        return false;
+    }
+
+    bool operator<=(const BigInt &other) const {
+        return (*this < other) || (*this == other);
+    }
+
+    bool operator==(const BigInt &other) const {
+        return digits == other.digits;
+    }
+
+    // Stream output operator
+    friend ostream &operator<<(ostream &out, const BigInt &value) {
+        if (value.digits.empty()) {
+            out << 0;
+            return out;
+        }
+        out << value.digits.back();
+        for (int i = value.digits.size() - 2; i >= 0; --i) {
+            out << setw(BASE_DIGITS) << setfill('0') << value.digits[i];
+        }
+        return out;
+    }
+};
+
+
 // Function to perform DFS and store the finish order of nodes
 void DFS(int node, vector<vector<int> > &adj, vector<bool> &visited, stack<int> &finishStack) {
     visited[node] = true;
@@ -27,36 +120,12 @@ void DFSUtil(int node, vector<vector<int> > &transposed, vector<bool> &visited, 
     }
 }
 
-// Function to compute 2^n for very large n
-string powerOfTwo(int n) {
-    vector<int> result(1, 1); // Store digits in reverse order
-    for (int i = 0; i < n; i++) {
-        int carry = 0;
-        for (int &digit: result) {
-            int temp = digit * 2 + carry;
-            digit = temp % 10;
-            carry = temp / 10;
-        }
-        while (carry) {
-            result.push_back(carry % 10);
-            carry /= 10;
-        }
-    }
-
-    string output;
-    for (auto it = result.rbegin(); it != result.rend(); ++it) {
-        output += to_string(*it);
-    }
-    return output;
-}
-
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr), cout.tie(nullptr);
 
     int x; // Number of equations
     cin >> x;
-
     while (x--) {
         int k; // Number of variables
         cin >> k;
@@ -165,7 +234,7 @@ int main() {
         }
 
         // Step 6: Output SCCs and calculate the number of solutions
-        int result = 0;
+        int exponent = 0;
         bool isContradictory = false;
         for (const auto &scc: SCCs) {
             bool hasZeroInSCC = false, hasOneInSCC = false;
@@ -190,17 +259,22 @@ int main() {
             }
             cout << "\n";
             if (!hasZeroInSCC && !hasOneInSCC) {
-                result += 1;
+                exponent++;
             } else if (hasZeroInSCC && hasOneInSCC) {
                 isContradictory = true;
                 break;
             }
         }
-        if(isContradictory) {
-            cout<<0<<"\n";
+        if (isContradictory) {
+            cout << 0 << "\n";
             continue;
         }
-        cout << powerOfTwo(result) << "\n";
+
+        BigInt result(1);
+        for(int i = 0; i < exponent; i++) {
+            result = result * BigInt(2);
+        }
+        cout << result << "\n";
     }
 
     return 0;

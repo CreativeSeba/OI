@@ -2,6 +2,9 @@
 // Memory Leak: Occurs when dynamically allocated memory is not freed, causing a program to consume more memory over time.
 // Null Pointer Exception: Attempting to dereference or use a null pointer (nullptr) causes an error or crash since it doesn't point to a valid memory location.
 
+//A refrence '&' doesnt store memory adress, it just makes us use the same memory adress as the variable we are refering to, so that we dont copy the variable
+//A pointer '*' stores the memory adress of the variable we are pointing to, so we can change the variable we are pointing to, we can change the memory adress we are pointing to, we can make the pointer point to nothing (nullptr)
+
 #include <iostream>
 using namespace std;
 
