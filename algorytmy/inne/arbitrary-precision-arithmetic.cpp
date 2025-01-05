@@ -4,8 +4,9 @@ using namespace std;
 
 class BigInt {
 private:
+    //we store digits in reverse order, because we dont have to iterate throught the vector from the end
     vector<uint32_t> digits; // Each element stores a part of the number, it is 32 bit, because we are adding 32 bit numbers, and we cant add 64 bit numbers, because it would exceed the limit
-    static const uint64_t BASE = 1000000000; // Base 10^9, used for arithmetic operations
+    static const uint32_t BASE = 1000000000; // Base 10^9, used for arithmetic operations
     static const int BASE_DIGITS = 9; // Number of digits in the base, used for string formatting
 
     // Helper function to remove leading zeros
@@ -34,6 +35,7 @@ public:
             digits.push_back(value % BASE);
             value /= BASE;
         } while (value > 0);
+
         return *this;
     }
 
@@ -53,7 +55,7 @@ public:
     //We dont return by refrence in the following functions, because we are returning a new BigInt object
 
     // Addition operator
-    BigInt operator+(const BigInt &other) const {
+    BigInt operator+(const BigInt &other) const { //const means that the function does not modify the object
         BigInt result;
         result.digits.clear(); // here it isnt necessary to clear the vector, because we are creating a new BigInt object, but it is good practice
         uint64_t carry = 0;
@@ -73,28 +75,35 @@ public:
 
     // Subtraction operator
     BigInt operator-(const BigInt &other) const {
-        if (*this < other) throw underflow_error("Negative result in unsigned BigInt subtraction");
+        if (*this < other) throw underflow_error("Negative result in unsigned BigInt subtraction"); //An underflow error occurs when an operation produces a result smaller than what can be represented by the data type being used
         BigInt result;
         result.digits.clear();
-        int64_t carry = 0;
+        //carry is either 0 or 1, because we can borrow only once
+        //we try to use the same types in the calculations to avoid overflows and promote the types
+        int64_t carry = 0;//Underflow behavior occurs due to how small integer types (like bool or int32_t) are promoted to larger types and how their results are interpreted in the operation, they are promoted to 32bit types and compiler tries to fit them into a 64bit, thus creating an underflow
+        //Using int64_t prevents the underflow, because it allows for proper representation of the type of numbers, allows for proper promotion of the types
         for (size_t i = 0; i < digits.size(); ++i) {
-            int64_t diff = digits[i] - carry - (i < other.digits.size() ? other.digits[i] : 0);
+            //we use int64 and not uint64, because we can get negative numbers, after subtraction and we need it to check if we need to borrow, and we dont use 32 bit int because we can borrow
+            int64_t diff = digits[i] - carry - (i < other.digits.size() ? other.digits[i] : 0); //odejmujemy carry, bo to jest to co porzyczylismy, jesli mamy liczbe 123456, to zaluzmy ze w tablicy jest [456, 123], jesli porzyczylismy od 123 to, to zostanie 123-1 , czyli 122
+            //(i < other.digits.size() ? other.digits[i] : 0) sprawdza czy mozna odjac, jesli nasza liczba jest wieksza niz liczba od ktorej chcemy odjac, tzn wyszla poza zakres, to odejmujemy zero, bo nie ma co odjac
             carry = (diff < 0);
-            if (carry) diff += BASE;
-            result.digits.push_back(diff);
+            if (carry) diff += BASE; // jesli musimy pozyczyc, to dodajemy do obecnej liczby 10^9, czyli 1
+            result.digits.push_back(diff); //dodajemy do wyniku
         }
-        result.trim();
+        result.trim(); //musi byc bo jesli w tablicy jest [0, 1] i [200000], to porzyczamy to jeden i zostaje zero z przodu
         return result;
     }
 
     // Multiplication operator
     BigInt operator*(const BigInt &other) const {
         BigInt result;
-        result.digits.resize(digits.size() + other.digits.size());
+        result.digits.resize(digits.size() + other.digits.size()); //Without resizing, result.digits will initially be empty, and trying to access result.digits[i + j] will attempt to write to an invalid memory location. This will cause either a crash or unexpected behavior.
         for (size_t i = 0; i < digits.size(); ++i) {
             uint64_t carry = 0;
             for (size_t j = 0; j < other.digits.size() || carry; ++j) {
-                uint64_t prod = result.digits[i + j] + digits[i] * 1ULL * (j < other.digits.size() ? other.digits[j] : 0) + carry;
+                //result.digits[i + j] to bierze pod uwage poprzednie wyniki mnozenia, ale bez tych ktor byly przed dodaniem 'zera' na koncu, bo jak i sie zwieksza to 'dodajemy' na koncu zero, mnozenie pod kreska
+                //(j < other.digits.size() ? other.digits[j] : 0) to sprawdza czy j juz wyszedl poza zakres, jesli tak to petla patrzy czy carry jest wieksze od zera, jesli jest to wykonywana jest ta operacja i zapomniane carry jest dodane do ostatniego bloku
+                uint64_t prod = result.digits[i + j] + digits[i] * 1ULL * (j < other.digits.size() ? other.digits[j] : 0) + carry; //1ULL(1 as an unsigned long long integer) is used to promote the result to 64 bits, because we are multiplying 32 bit numbers, and we dont want to lose the data
                 result.digits[i + j] = prod % BASE;
                 carry = prod / BASE;
             }
@@ -161,8 +170,8 @@ public:
 };
 
 int main() {
-    BigInt num1("190000000000000000000000");
-    BigInt num2("190000000000000000000000");
+    BigInt num1("1234");
+    BigInt num2("567");
 
     BigInt sum = num1 + num2;
     BigInt diff = num1 - num2;

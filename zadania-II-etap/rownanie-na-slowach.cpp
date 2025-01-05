@@ -34,7 +34,7 @@ public:
         return *this;
     }
 
-    BigInt &operator=(const string &str) { //Passed by reference, because strings are large and const, because we don't want to change the value of the string
+    BigInt &operator=(const string &str) {
         digits.clear();
         int len = str.length();
         for (int i = len; i > 0; i -= BASE_DIGITS) {
