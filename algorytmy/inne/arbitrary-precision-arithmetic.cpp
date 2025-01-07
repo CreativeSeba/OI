@@ -118,6 +118,37 @@
             BigInt result, current;
             result.digits.resize(digits.size()); // Moze byc tyle blokow ile jest w dzielnej
             for (int i = digits.size() - 1; i >= 0; --i) { // idziemy od tylu, bo digits jest od tylu, a dzielenie pisemne zaczyna sie od najwiekszej czesci liczby,a nie od najmniejszej
+                // Dowód dlaczego current < other * BASE zawsze zachodzi:
+                //
+                // 1. Aktualizacja current:
+                //    W każdej iteracji pętli current jest aktualizowane w ten sposób:
+                //        current = current * BASE + digits[i];
+                //    To oznacza, że dodajemy do current cyfrę digits[i], która zawsze jest mniejsza od BASE
+                //    (ponieważ każda cyfra w digits reprezentuje wartość w systemie pozycyjnym opartym na BASE).
+                //
+                // 2. Zakres x:
+                //    Wyszukujemy x spełniające:
+                //        other * x <= current
+                //    Wyszukiwanie binarne ogranicza x do zakresu:
+                //        0 <= x < BASE
+                //    Maksymalna możliwa wartość to więc other * (BASE - 1).
+                //
+                // 3. Maksymalna wartość current:
+                //    Przed odjęciem w każdej iteracji maksymalna wartość current wynosi:
+                //        current = other * (BASE - 1) + digits[i];
+                //    Ponieważ digits[i] < BASE, to:
+                //        current < other * BASE
+                //
+                // 4. Po każdej iteracji:
+                //    W każdej iteracji odejmujemy od current wartość other * x, co powoduje,
+                //    że current w kolejnych krokach staje się coraz mniejsze.
+                //    Dzięki temu current nigdy nie osiągnie wartości większej lub równej other * BASE.
+                //
+                // Podsumowanie:
+                // Warunek current < other * BASE zawsze jest spełniony,
+                // co oznacza, że x nigdy nie osiągnie wartości BASE, (x moze byc maksymalnie BASE-1)
+                // a wynik dzielenia jest zawsze poprawny.
+
                 current = current* BASE+ digits[i];// Current, to jest ta czesc glownej liczby od ktorej odejmujy, na ktorej wykonujemy obliczenia. Mnozymy przez BASE, bo nawet jesli digits jest 0 to trzeba przeniesc o BASE, zeby byl poprawny wynik, bo digits=0 moze oznaczac 10^9, tak jakby przesuwamy o jedno miejsce w lewo, tak jak w dzieleniu pisemnym, BASE jest jak jedna cyfra
                 uint32_t x = 0, left = 0, right = BASE; //x to ta liczba, ktora jest na gorze w dzieleniu pisemnym, czyli wynik.
                 //nie moze byc samo wyszukiwanie binarne, bo dzielimy w wyszukiwaniu binarnym, i nedzie nieskonczona rekurencja
@@ -139,32 +170,36 @@
 
         // Comparison operators
         bool operator<(const BigInt &other) const {
-            if (digits.size() != other.digits.size())
+            if (digits.size() != other.digits.size())//sprawdza czy rozmiary tablic digits obu liczb sie roznia, jesli tak to zwraca true jesli digits jest mniejsza od other.digits, a false jak jest wieksza
                 return digits.size() < other.digits.size();
-            for (int i = digits.size() - 1; i >= 0; --i) {
-                if (digits[i] != other.digits[i])
+            for (int i = digits.size() - 1; i >= 0; --i) {//iteruje sie od tylu, zeby sprawdzac najwieksze czesci liczby
+                if (digits[i] != other.digits[i])//jesli jakas czesc sie roznia to zwraca true jesli digits jest mniejsza od other.digits, a false jak jest wieksza
                     return digits[i] < other.digits[i];
             }
             return false;
         }
 
         bool operator<=(const BigInt &other) const {
-            return (*this < other) || (*this == other);
+            return (*this < other) || (*this == other);//zwraca true jesli aktualny obiekt jest mniejsza od other lub jesli sa rowne
         }
 
         bool operator==(const BigInt &other) const {
-            return digits == other.digits;
+            return digits == other.digits; //operator == sprawdza na wektorach, czy ich wszystkie indeksy sa rowne, sprawdza tez najpierw czy sa rowne czy nie, wiec nie trzeba tego pisac
         }
 
         // Stream output operator
-        friend ostream &operator<<(ostream &out, const BigInt &value) {
-            if (value.digits.empty()) {
+        //ostream is a class used for output streams in C++ (like std::cout).
+        //operator<< for BigInt tells how to output a BigInt object to an ostream
+        //bierze dwa argumenty, pierwszy to typ ostream, a drugi to BigInt, zwraca ostream
+        friend ostream &operator<<(ostream &out, const BigInt &value) { //friend to jest typ danych, ktory daje dostep do prywatnych danych klasy, w tym przypadku do digits
+            if (value.digits.empty()) { //jesli nie ma cyfr to wypisuje 0
                 out << 0;
                 return out;
             }
-            out << value.digits.back();
-            for (int i = value.digits.size() - 2; i >= 0; --i) {
-                out << setw(BASE_DIGITS) << setfill('0') << value.digits[i];
+            out << value.digits.back();//wypisujemy pierwszy element, bo nie musi byc on dlugosci BASE_DIGITS
+            for (int i = value.digits.size() - 2; i >= 0; --i) {//-2, bo zaczynamy od przedostatniego elementu
+                out << setw(BASE_DIGITS) << setfill('0') << value.digits[i]; //setw(BASE_DIGITS): Ustawia szerokość pola wyjścia na BASE_DIGITS
+                //setfill('0'): Ustala, że w przypadku, gdy liczba ma mniej niż 9 cyfr, miejsce w polu szerokości zostanie wypełnione zerami (0). Na przykład, jeśli cyfra w digits[i] to 123, a szerokość pola wynosi 9, to na wyjściu będzie 000000123.
             }
             return out;
         }
@@ -204,6 +239,8 @@
     4. Division (operator/):
        Time Complexity: O(n^2)
        - Performs repeated subtraction (scaled by binary search for the quotient), which involves O(n) operations for each of the n blocks.
+       - Wewnątrz wyszukiwania binarnego, w każdym kroku wykonujemy mnożenie other * mid i sprawdzamy wynik. Ponieważ other może mieć n bloków cyfr,
+         każda taka operacja mnożenia ma złożoność O(n), a logatymiczny czas pomijamy, bo jest on zdominowany przez operacje mnożenia.
 
     5. Comparison (operator<, operator<=, operator==):
        Time Complexity: O(n)
