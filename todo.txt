@@ -1,0 +1,29 @@
+Skarbonki - https://szkopul.edu.pl/problemset/problem/lm7lS3cC3aTRwlRaCztGRkov/site/?key=statement
+Łuk triumfalny - https://szkopul.edu.pl/problemset/problem/jgCcEjQu3kdpM4BmxA6GujfX/site/?key=statement
+Plakatowanie - https://szkopul.edu.pl/problemset/problem/au-E9FH96-3U9rCKhcNsD5n9/site/?key=statement
+Tetris Attack - https://szkopul.edu.pl/c/oboz10-14grupa__minus1/p/tet/18281/
+Trójkąty jednobarwne - https://szkopul.edu.pl/problemset/problem/UU2Uj-barjiONnRxd9aEVoDj/site/?key=statement
+Dziuple - https://szkopul.edu.pl/problemset/problem/UU2Uj-barjiONnRxd9aEVoDj/site/?key=statement
+Megalopolis - https://szkopul.edu.pl/problemset/problem/R6kgLB2Xz3fsLFYKA-4P9fzp/site/?key=statement
+Remont - https://szkopul.edu.pl/problemset/problem/xNjwUvwdHQoQTFBrmyG8vD1O/site/?key=statement
+Krążki - https://szkopul.edu.pl/problemset/problem/fYXVXOreVxlXTRoHZJXyXF2l/site/?key=statement
+Test na inteligencję - https://szkopul.edu.pl/problemset/problem/Ak4wWPkNtHpF-OiulN1gixfW/site/?key=statement
+Gildie - https://szkopul.edu.pl/problemset/problem/Oys6jiVOIap59lYCHRwDMbNT/site/?key=statement
+Czekolada - https://szkopul.edu.pl/problemset/problem/8AKFvYX1GKjeakIidXGH5_h7/site/?key=statement
+Przedziały - https://szkopul.edu.pl/problemset/problem/w5PRX1QCpJeRUHpwNUpcbF6S/site/?key=statement
+Przymytnicy - https://szkopul.edu.pl/problemset/problem/l8-ujU0a7HQFxy8UY32B4Kk_/site/?key=statement
+Parada - https://szkopul.edu.pl/problemset/problem/l8-ujU0a7HQFxy8UY32B4Kk_/site/?key=statement
+Bony - https://szkopul.edu.pl/problemset/problem/Y2sHfxzqdwT7qKzabT0fzmlB/site/?key=statement - Szereg harmoniczny - https://pl.wikipedia.org/wiki/Szereg_harmoniczny - 1/2 + 1/3 + 1/4 + 1/5 + 1/6 + ... + 1/n = n * log_2(n) = O(n*log(n))
+Flappy Bird - https://szkopul.edu.pl/problemset/problem/eLy9p2a1VStZ4y9y-LdeB-8f/site/?key=statement
+
+https://codeforces.com/contest/1199/problem/D
+https://codeforces.com/contest/1199/problem/C
+https://codeforces.com/contest/1201/problem/C
+https://codeforces.com/contest/1201/problem/C
+https://codeforces.com/contest/220/problem/B
+https://codeforces.com/contest/1203/problem/E
+https://leetcode.com/problems/rotate-function/description/
+https://codeforces.com/contest/1622/problem/B
+https://codeforces.com/contest/1405/problem/C
+https://codeforces.com/contest/1363/problem/E
+https://codeforces.com/contest/1417/problem/C

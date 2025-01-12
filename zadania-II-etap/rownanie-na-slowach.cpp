@@ -120,6 +120,30 @@ void DFSUtil(int node, vector<vector<int> > &transposed, vector<bool> &visited, 
     }
 }
 
+void printSCCs(const vector<vector<int>> &SCCs, int idx, const unordered_map<char, int> &variableIndex, const vector<int> &lengths, bool hasZero, bool hasOne) {
+    for (const auto &scc : SCCs) {
+        cout << "SCC: ";
+        for (int node : scc) {
+            if (node < idx) {
+                for (const auto &[var, startIdx] : variableIndex) {
+                    if (node >= startIdx && node < startIdx + lengths[var - 'a']) {
+                        cout << var << (node - startIdx + 1) << " ";
+                        break;
+                    }
+                }
+            } else {
+                if (hasZero && node == idx) {
+                    cout << "0 ";
+                } else if (hasOne && node == idx + (hasZero ? 1 : 0)) {
+                    cout << "1 ";
+                }
+            }
+        }
+        cout << "\n";
+    }
+}
+
+
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr), cout.tie(nullptr);
@@ -234,30 +258,18 @@ int main() {
         }
 
         // Step 6: Output SCCs and calculate the number of solutions
+        printSCCs(SCCs, idx, variableIndex, lengths, hasZero, hasOne);
+
         int exponent = 0;
         bool isContradictory = false;
-        for (const auto &scc: SCCs) {
+        for (const auto &scc : SCCs) {
             bool hasZeroInSCC = false, hasOneInSCC = false;
-            cout << "SCC: ";
-            for (int node: scc) {
-                if (node < idx) {
-                    for (const auto &[var, startIdx]: variableIndex) {
-                        if (node >= startIdx && node < startIdx + lengths[var - 'a']) {
-                            cout << var << (node - startIdx + 1) << " ";
-                            break;
-                        }
-                    }
-                } else {
-                    if (hasZero && node == idx) {
-                        cout << "0 ";
-                        hasZeroInSCC = true;
-                    } else if (hasOne && node == idx + (hasZero ? 1 : 0)) {
-                        cout << "1 ";
-                        hasOneInSCC = true;
-                    }
+            for (int node : scc) {
+                if (node >= idx) {
+                    if (hasZero && node == idx) hasZeroInSCC = true;
+                    if (hasOne && node == idx + (hasZero ? 1 : 0)) hasOneInSCC = true;
                 }
             }
-            cout << "\n";
             if (!hasZeroInSCC && !hasOneInSCC) {
                 exponent++;
             } else if (hasZeroInSCC && hasOneInSCC) {
