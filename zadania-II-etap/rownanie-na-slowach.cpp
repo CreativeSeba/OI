@@ -124,9 +124,13 @@ void printSCCs(const vector<vector<int>> &SCCs, int idx, const unordered_map<cha
     for (const auto &scc : SCCs) {
         cout << "SCC: ";
         for (int node : scc) {
-            if (node < idx) {
+            if (node < idx) { //jesli node jest mniejszy od idx, to znaczy, ze jest to zmienna
+                //[var, startIdx] to jest syntax, ktory pozwala nam wziac dwie wartosci z mapy, var to klucz, a startIdx to wartosc
                 for (const auto &[var, startIdx] : variableIndex) {
+                    //node >= startIdx to sprawdza czy node jest w zakresie zmiennej
+                    //node < startIdx + lengths[var - 'a'], tez sprawdza czy node jest w zakresie zmiennej, tylko ze sprawdza czy juz dotarl do granicy
                     if (node >= startIdx && node < startIdx + lengths[var - 'a']) {
+                        //node to jest globalny indeks zmiennej(bez rozwiniecia), usuwamy startIdx, zeby miec pojedynczy node z zakresu zmiennej i dodajemy 1, bo w tablicy indeksujemy od 0
                         cout << var << (node - startIdx + 1) << " ";
                         break;
                     }
@@ -169,47 +173,52 @@ int main() {
         cin >> rightSide;
 
         // Step 1: Create graph adjacency list
-        unordered_map<char, int> variableIndex; // Map variables to their starting index// Store lengths of variables
-        int idx = 0;
+        // kolejnosc zmiennych w mapie jest taka sama jak kolejnosc w wejsciu, wiec nie trzeba sortowac
+        unordered_map<char, int> variableIndex; // Map variables to their starting index
+        int idx = 0; // suma dlugosci zmiennych (idx, bo skrot od index), idx zawsze jest rowny(tzn. nie jest rowny, ale jego kodowanie jest rowne) 0 albo 1(1 tez moze byc idx + 1);
 
-        // Map each variable to its starting index and calculate the total number of vertices
+        // Przypisanie indeksow zmiennym do variableIndex
         for (int i = 0; i < k; i++) {
             char variable = 'a' + i;
-            variableIndex[variable] = idx;
+            variableIndex[variable] = idx; //indeks gdzie zaczyna sie sekwencja tych samych znakow
             idx += lengths[i];
         }
 
         // Check if '0' or '1' appear in the input
+        //npos to stala statyczna, ktora oznacza, ze nie znaleziono
+        //funkcja find zwraca npos (not position) jesli nie znajdzie, npos rowna sie -1, czyli maksymalna wartosc dla size_t
         bool hasZero = leftSide.find('0') != string::npos || rightSide.find('0') != string::npos;
         bool hasOne = leftSide.find('1') != string::npos || rightSide.find('1') != string::npos;
 
+        //0 i 1 to sa te same wierzcholki (tzn jedynki i zera), nawet jak jest ich kilka w slowie, to caly czas to te same wierzcholki
         int totalVertices = idx + (hasZero ? 1 : 0) + (hasOne ? 1 : 0); // Include vertices for 0 and 1 if they appear
-        vector<vector<int> > adj(totalVertices);
-        vector<int> leftExpanded, rightExpanded;
+        vector<vector<int>> adj(totalVertices);
+        vector<int> leftExpanded, rightExpanded; // Expanded representation of the left and right sides
 
         // Step 2: Expand left and right sides of the equation
         auto expand = [&](const string &side, vector<int> &expanded) {
             for (char c: side) {
-                if (isalpha(c)) {
-                    int startIdx = variableIndex[c];
-                    int len = lengths[c - 'a'];
+                if (isalpha(c)) { // isalpha sprawdza czy znak jest litera
+                    int startIdx = variableIndex[c]; // dlugosc zmiennej, czyli ilosc nodow danej zmiennej
+                    //c-'a' jest po to, aby uzywac indeksowania od 0, a nie od 97, bo a to 97 w ascii
+                    int len = lengths[c - 'a']; // dlugosc zmiennej, czyli ilosc nodow danej zmiennej (c - 'a' to indeks zmiennej)
                     for (int i = 0; i < len; i++) {
                         expanded.push_back(startIdx + i);
                     }
                 } else {
                     if (c == '0' && hasZero) {
-                        expanded.push_back(idx); // Map 0 to its index
+                        expanded.push_back(idx);
                     } else if (c == '1' && hasOne) {
-                        expanded.push_back(idx + (hasZero ? 1 : 0)); // Map 1 to its index
+                        expanded.push_back(idx + (hasZero ? 1 : 0)); //jesli has zero tzn, ze mamy zero w slowie i, ze totalVertices jest wieksze o 1, wiec indeks jedynki musi byc wiekszy o jeden od indeksu zera
                     }
                 }
             }
         };
-
         // Expand left and right sides
         expand(leftSide, leftExpanded);
         expand(rightSide, rightExpanded);
 
+        // jesli dlugosci slow po rozwinięciu sa rozne, to nie ma rozwiazania i przechodzimy do kolejnego testu
         if (leftExpanded.size() != rightExpanded.size()) {
             cout << 0 << "\n";
             continue;
@@ -219,8 +228,9 @@ int main() {
         for (int i = 0; i < leftExpanded.size(); i++) {
             int u = leftExpanded[i];
             int v = rightExpanded[i];
+            //dodajemy dwie krawedzie miedzy u i v, bo mamy doczynienia z grafem nie skierowanym
             adj[u].push_back(v);
-            adj[v].push_back(u); // If the graph should be undirected
+            adj[v].push_back(u);
         }
 
         // Step 4: Transpose graph creation (for SCC finding)
@@ -258,10 +268,8 @@ int main() {
         }
 
         // Step 6: Output SCCs and calculate the number of solutions
-        printSCCs(SCCs, idx, variableIndex, lengths, hasZero, hasOne);
-
         int exponent = 0;
-        bool isContradictory = false;
+        bool isContradictory = false; // sprawdza czy jest sprzecznosc, czyli czy w jednym scc jest 0 i 1
         for (const auto &scc : SCCs) {
             bool hasZeroInSCC = false, hasOneInSCC = false;
             for (int node : scc) {
@@ -287,7 +295,8 @@ int main() {
             result = result * BigInt(2);
         }
         cout << result << "\n";
-    }
 
+        printSCCs(SCCs, idx, variableIndex, lengths, hasZero, hasOne);
+    }
     return 0;
 }

@@ -4,6 +4,6 @@ project(OI)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(OI
-        zadania-II-etap/rownanie-na-slowach.cpp
-        algorytmy/todo/dwumian-newtona.cpp
+        algorytmy/inne/monotonic-queue.cpp
+        budowa-jezyka/move.cpp
 )

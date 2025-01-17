@@ -1,3 +1,4 @@
+//przedzial-przedzial, oznacza, ze insert wykonujemy na przedziale i query na przedziale, a sum-sum, ze podczas insertu na przedziale wykonujmey sume, a podczas query tez sume
 #include <bits/stdc++.h>
 
 using namespace std;

@@ -5,7 +5,7 @@ using namespace std;
 // Function to perform DFS and store the finish order of nodes
 void DFS(int node, vector <vector<int>> &adj, vector<bool> &visited, stack<int> &finishStack) {
     visited[node] = true;
-    for (int adjacent: adj[node]) {
+    for (int adjacent : adj[node]) {
         if (!visited[adjacent]) {
             DFS(adjacent, adj, visited, finishStack);
         }
@@ -17,7 +17,7 @@ void DFS(int node, vector <vector<int>> &adj, vector<bool> &visited, stack<int> 
 void DFSUtil(int node, vector <vector<int>> &transposed, vector<bool> &visited, vector<int> &scc) {
     visited[node] = true;
     scc.push_back(node);
-    for (int adjacent: transposed[node]) {
+    for (int adjacent : transposed[node]) {
         if (!visited[adjacent]) {
             DFSUtil(adjacent, transposed, visited, scc);
         }
@@ -30,11 +30,32 @@ int countReachable(int sccId, vector <vector<int>> &adj, vector<bool> &visited, 
     visited[sccId] = true;
 
     int reachableNodes = sccReachCount[sccId]; // sccReachCount[sccId] to liczba nodow w scc
-    for (int nextSccId: adj[sccId]) {
+    for (int nextSccId : adj[sccId]) {
         reachableNodes += countReachable(nextSccId, adj, visited, sccReachCount); // rekurencyjnie zliczamy reachable nodes dla kazdego scc, dopoki nie bedzie visited
     }
 
     return sccReachCount[sccId] = reachableNodes; //zmienimay sccReachCount[sccId] na reachableNodes, bo juz wiemy ile jest reachable nodes
+}
+
+void printSCCs(vector<vector<int>> &SCCs, vector<vector<int>> &SCCGraph) {
+    for (int i = 0; i < SCCs.size(); i++) {
+        cout << "SCC " << i + 1 << ": ";
+        for (int j: SCCs[i]) {
+            cout << j + 1 << " "; // Print nodes in the SCC
+        }
+        cout << "\n";
+    }
+
+    cout << "Condensed graph edges (SCCs as nodes):\n";
+    for (int i = 0; i < SCCs.size(); i++) {
+        if (SCCGraph[i].empty()) {
+            cout << "SCC " << i + 1 << " has no outgoing edges\n";
+        } else {
+            for (int j: SCCGraph[i]) {
+                cout << "SCC " << i + 1 << " -> SCC " << j + 1 << "\n"; // Print edges between SCCs
+            }
+        }
+    }
 }
 
 int main() {
@@ -94,6 +115,7 @@ int main() {
     // Add edges between SCCs
     for (int i = 0; i < m; i++) {
         int u = edges[i].first, v = edges[i].second;
+        // dodajemy krawedz miedzy SCCs, jesli ich id nie sa w tej samej SCC
         if (sccId[u] != sccId[v]) {
             SCCGraph[sccId[u]].push_back(sccId[v]);  // Create edge between SCCs
         }
@@ -111,20 +133,8 @@ int main() {
     for (int i = 0; i < n; i++) {
         cout << sccReachCount[sccId[i]] - 1 << endl;
     }
-    for (int i = 0; i < SCCs.size(); i++) {
-        cout << "SCC " << i + 1 << ": ";
-        for (int j: SCCs[i]) {
-            cout << j + 1 << " "; // Print nodes in the SCC
-        }
-        cout << "\n";
-    }
 
-    cout << "Condensed graph edges (SCCs as nodes):\n";
-    for (int i = 0; i < SCCs.size(); i++) {
-        for (int j: SCCGraph[i]) {
-            cout << "SCC " << i + 1 << " -> SCC " << j + 1 << "\n"; // Print edges between SCCs
-        }
-    }
+    printSCCs(SCCs, SCCGraph);
 
     return 0;
 }
