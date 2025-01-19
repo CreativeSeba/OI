@@ -6,8 +6,8 @@
     private:
         //we store digits in reverse order, because we dont have to iterate throught the vector from the end
         vector<uint32_t> digits; // Each element stores a part of the number, it is 32 bit, because we are adding 32 bit numbers, and we cant add 64 bit numbers, because it would exceed the limit
-        static const uint32_t BASE = 1000000000; // Base 10^9, used for arithmetic operations
-        static const int BASE_DIGITS = 9; // Number of digits in the base, used for string formatting
+        static constexpr uint32_t BASE = 1000000000; // Base 10^9, used for arithmetic operations
+        static constexpr int BASE_DIGITS = 9; // Number of digits in the base, used for string formatting
 
         // Helper function to remove leading zeros
         void trim() {
@@ -148,6 +148,11 @@
                 // Warunek current < other * BASE zawsze jest spełniony,
                 // co oznacza, że x nigdy nie osiągnie wartości BASE, (x moze byc maksymalnie BASE-1)
                 // a wynik dzielenia jest zawsze poprawny.
+
+                //W skrócie current = remainder - other * x;
+                //remainder po kazdej iteracji jest mniejszy od other, bo nawet jesli current jest wieksze od other, to jest to tylko na poczatku iteracji i potem jak jest wieksze to od razu jest odejmowane bo jakas ilosc other sie miesci
+                //remainder < other
+                //digits[i] < BASE, wiec current < other * BASE, bo digits nie jest w stanie przekroczyc BASE, dodac zera na koncu
 
                 current = current* BASE+ digits[i];// Current, to jest ta czesc glownej liczby od ktorej odejmujy, na ktorej wykonujemy obliczenia. Mnozymy przez BASE, bo nawet jesli digits jest 0 to trzeba przeniesc o BASE, zeby byl poprawny wynik, bo digits=0 moze oznaczac 10^9, tak jakby przesuwamy o jedno miejsce w lewo, tak jak w dzieleniu pisemnym, BASE jest jak jedna cyfra
                 uint32_t x = 0, left = 0, right = BASE; //x to ta liczba, ktora jest na gorze w dzieleniu pisemnym, czyli wynik.
