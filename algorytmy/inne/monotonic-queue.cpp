@@ -18,6 +18,7 @@ vector<int> maxSlidingWindow(const vector<int>& nums, int k) {
         }
         dq.push_back(i);
 
+        //jesli i >= k - 1 to dodajemy do wyniku maksymalny element w oknie, bo najpierw jak i jest mneijsze to musimy przejsc przez cale okno, a jak jest wieksze to co kazda iteracje usuwamy jeden element, wiec mozna od razu dodac do wyniku po petli while
         if (i >= k - 1) {
             result.push_back(nums[dq.front()]);
         }

@@ -124,7 +124,7 @@ void printSCCs(const vector<vector<int>> &SCCs, int idx, const unordered_map<cha
     for (const auto &scc : SCCs) {
         cout << "SCC: ";
         for (int node : scc) {
-            if (node < idx) { //jesli node jest mniejszy od idx, to znaczy, ze jest to zmienna
+            if (node < idx) { //jesli node jest mniejszy od idx, to znaczy, ze jest to zmienna, bo dlugosci zmiennych sa od 0 do idx - 1
                 //[var, startIdx] to jest syntax, ktory pozwala nam wziac dwie wartosci z mapy, var to klucz, a startIdx to wartosc
                 for (const auto &[var, startIdx] : variableIndex) {
                     //node >= startIdx to sprawdza czy node jest w zakresie zmiennej
@@ -175,7 +175,7 @@ int main() {
         // Step 1: Create graph adjacency list
         // kolejnosc zmiennych w mapie jest taka sama jak kolejnosc w wejsciu, wiec nie trzeba sortowac
         unordered_map<char, int> variableIndex; // Map variables to their starting index
-        int idx = 0; // suma dlugosci zmiennych (idx, bo skrot od index), idx zawsze jest rowny(tzn. nie jest rowny, ale jego kodowanie jest rowne) 0 albo 1(1 tez moze byc idx + 1);
+        int idx = 0; // suma dlugosci zmiennych (idx, bo skrot od index), idx zawsze jest rowny(tzn. nie jest rowny, ale jego kodowanie jest rowne) 0 albo 1(1 tez moze byc idx + 1). Chodzi o to ze jesli jest wiekszy niz suma dlugosci zmiennych to znaczy ze jest to 1, lub 0
 
         // Przypisanie indeksow zmiennym do variableIndex
         for (int i = 0; i < k; i++) {
@@ -199,7 +199,7 @@ int main() {
         auto expand = [&](const string &side, vector<int> &expanded) {
             for (char c: side) {
                 if (isalpha(c)) { // isalpha sprawdza czy znak jest litera
-                    int startIdx = variableIndex[c]; // dlugosc zmiennej, czyli ilosc nodow danej zmiennej
+                    int startIdx = variableIndex[c]; // poczatek zmiennej
                     //c-'a' jest po to, aby uzywac indeksowania od 0, a nie od 97, bo a to 97 w ascii
                     int len = lengths[c - 'a']; // dlugosc zmiennej, czyli ilosc nodow danej zmiennej (c - 'a' to indeks zmiennej)
                     for (int i = 0; i < len; i++) {
@@ -253,7 +253,7 @@ int main() {
         }
 
         // Step 5.2: Perform DFS on the transposed graph to discover SCCs
-        vector<vector<int> > SCCs;
+        vector<vector<int>> SCCs;
         fill(visited.begin(), visited.end(), false);
 
         while (!finishStack.empty()) {
@@ -273,7 +273,7 @@ int main() {
         for (const auto &scc : SCCs) {
             bool hasZeroInSCC = false, hasOneInSCC = false;
             for (int node : scc) {
-                if (node >= idx) {
+                if (node >= idx) { // to działa, bo w funckji expand dodajemy idx + 1, jesli jest 1 w slowie
                     if (hasZero && node == idx) hasZeroInSCC = true;
                     if (hasOne && node == idx + (hasZero ? 1 : 0)) hasOneInSCC = true;
                 }

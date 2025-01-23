@@ -30,4 +30,3 @@ https://codeforces.com/contest/1417/problem/C
 https://codeforces.com/contest/1392/problem/D
 https://codeforces.com/contest/1622/problem/C
 https://codeforces.com/contest/1459/problem/C
-https://codeforces.com/contest/1395/problem/C

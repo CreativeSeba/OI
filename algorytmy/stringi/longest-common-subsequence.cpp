@@ -15,6 +15,7 @@ int lcs(string &S1, string &S2) {
         for (int j = 1; j <= n; ++j) {
             if (S1[i - 1] == S2[j - 1]) {
                 // If characters match, the current value is 1 + the diagonal value from the previous row
+                //dodajemy 1 do j-1, bo sprawdzamy litery pojednyczo i dp zaiwera najbardziej optymalny wtnik do pewnego momentu, wiec musimy dodac ta jedna litere do poprzedniej sekwencji
                 curr[j] = prev[j - 1] + 1;
             } else {
                 // Otherwise, the current value is the max of the top or left cell

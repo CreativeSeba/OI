@@ -23,11 +23,11 @@ int main() {
 
         for (int i = 0; i < n; i++) {
             long long j = upper_bound(a.begin() + i, a.end(), a[i] + k) - a.begin() - 1;
-            if (j - i >= 2) {
+            if (j - i + 1 >= m){
+                // Kombinacja C(n, 2) = n! / (2! * (n - 2)!) = n(n - 1) / 2
                 ans += (j - i) * (j - i - 1) / 2;
             }
         }
-
         cout << ans << '\n';
     }
     return 0;
