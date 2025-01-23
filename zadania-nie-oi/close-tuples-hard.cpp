@@ -46,17 +46,16 @@ int main() {
         auto dp = compute_binomial_coefficients(n, m);
 
         long long ans = 0;
-
         for (int i = 0; i < n; i++) {
             //zwraca iterator, ale - a.begin() zwraca odleglosc od poczatku tablicy (zamienia na indeks) i -1, zeby miec <= k a nie > k
             long long j = upper_bound(a.begin() + i, a.end(), a[i] + k) - a.begin() - 1;
             //j-i+1 - liczba elementow w okienku (musi byc >= m)
             if (j - i + 1 >= m) {
-                //j-1 do liczba elementow w przedziale(n), a m-1 (bo jest indeksowanie od zera w dp) to liczba elementow w okienku
+                //j-1 to liczba elementow w przedziale(n) bez a[i], a m-1 dlatego, bo liczymy wszystkie mozliwe kombinacje dla aktualnego a[i], czyli wszystkie kombinacje w dnaej iteracji maja a[i](a[i] jest fixed)
                 ans += dp[j - i][m - 1];
             }
         }
-        cout << ans << '\n';
+        cout <<ans << '\n';
     }
 
     return 0;
