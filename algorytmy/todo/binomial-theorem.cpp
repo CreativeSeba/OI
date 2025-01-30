@@ -1,1 +1,0 @@
-//dwumian newtona

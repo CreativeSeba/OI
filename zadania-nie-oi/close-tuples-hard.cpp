@@ -51,7 +51,10 @@ int main() {
             long long j = upper_bound(a.begin() + i, a.end(), a[i] + k) - a.begin() - 1;
             //j-i+1 - liczba elementow w okienku (musi byc >= m)
             if (j - i + 1 >= m) {
-                //j-1 to liczba elementow w przedziale(n) bez a[i], a m-1 dlatego, bo liczymy wszystkie mozliwe kombinacje dla aktualnego a[i], czyli wszystkie kombinacje w dnaej iteracji maja a[i](a[i] jest fixed)
+                //j-i to liczba elementow w przedziale(n) bez a[i], a m-1 dlatego, bo liczymy wszystkie mozliwe kombinacje dla aktualnego a[i], czyli wszystkie kombinacje w dnaej iteracji maja a[i](a[i] jest fixed)
+                //j-i oraz m-1, licza tak naprawde wszystkie kobinacje bez a[i] i tak jakby dodajemy to a[i], dlatego mamy wszystkie mozliwe kombinacje gdzie pierwszym elementem jest a[i]
+                //np. jesli wynikiami jest 123, 124, 134, to program policzy 23, 24, 34, a potem 'dodamy' a[i] do kazdego wyniku
+                //jesli bysmy tego tak nie liczyli tylko j-i+1, m, to bymsy liczyli czasami te same kombinacje, bo okienka czasami sie nakladaja. Liczac kombinacje dla a[i], upewniamy sie ze nie liczymy tego samego kilka razy
                 ans += dp[j - i][m - 1];
             }
         }

@@ -1,10 +1,3 @@
-// Dangling Pointer: A pointer that refers to memory that has been freed/deallocated. Accessing such memory leads to undefined behavior.
-// Memory Leak: Occurs when dynamically allocated memory is not freed, causing a program to consume more memory over time.
-// Null Pointer Exception: Attempting to dereference or use a null pointer (nullptr) causes an error or crash since it doesn't point to a valid memory location.
-
-//A refrence '&' doesnt store memory adress, it just makes us use the same memory adress as the variable we are refering to, so that we dont copy the variable
-//A pointer '*' stores the memory adress of the variable we are pointing to, so we can change the variable we are pointing to, we can change the memory adress we are pointing to, we can make the pointer point to nothing (nullptr)
-
 #include <iostream>
 using namespace std;
 
@@ -24,6 +17,44 @@ void printSquare(int x) {
 void executeFunction(void (*func)(int), int value) {
     cout << "Executing function pointer with value: " << value << endl;
     func(value); // Call the function using the pointer
+}
+
+// Function to demonstrate pointers to pointers (dynamic 2D array)
+void demoPointerToPointer() {
+    // Creating a dynamic 2D array using pointers to pointers
+    int rows = 3, cols = 3;
+
+    // Dynamically allocating memory for rows (array of pointers)
+    int** arr = new int*[rows];
+
+    // Dynamically allocating memory for columns in each row
+    for (int i = 0; i < rows; i++) {
+        //dereferencing arr[i] to allocate memory for column for each pointer in the array
+        arr[i] = new int[cols];
+    }
+
+    // Initializing the 2D array with values
+    int value = 1;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            arr[i][j] = value++;
+        }
+    }
+
+    // Printing the 2D array
+    cout << "\n2D Array (3x3) using Pointer to Pointer:" << endl;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            cout << arr[i][j] << " ";
+        }
+        cout << endl;
+    }
+
+    // Deallocating the memory
+    for (int i = 0; i < rows; i++) {
+        delete[] arr[i]; // Deallocate each row
+    }
+    delete[] arr; // Deallocate the array of pointers
 }
 
 int main() {
@@ -55,6 +86,7 @@ int main() {
 
     // 4. Pointer to a function
     // Pointers to functions allow dynamic function calls.
+    // Adress of the function is the same thing as varaible adress
     void (*funcPtr)(int) = printValue; // funcPtr points to printValue function
 
     cout << "\nPointer to Function Example:" << endl;
@@ -68,6 +100,9 @@ int main() {
     cout << "\nUsing Function Pointer as Argument:" << endl;
     executeFunction(printValue, 15); // Pass printValue as a function pointer
     executeFunction(printSquare, 4); // Pass printSquare as a function pointer
+
+    // 6. Demonstrating Pointer to Pointer (Dynamic 2D Array)
+    demoPointerToPointer();
 
     return 0;
 }

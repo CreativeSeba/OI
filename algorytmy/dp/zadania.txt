@@ -10,4 +10,5 @@ zaladunek - zadania-III-etap/zaladunek.cpp
 
 Nie OI:
 colored rectangles - zadania-nie-oi/colored-rectangles.cpp
+close tuples hard - zadania-nie-oi/close-tuples-hard.cpp
 

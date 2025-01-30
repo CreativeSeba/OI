@@ -4,5 +4,6 @@ project(OI)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(OI
-        zadania-nie-oi/close-tuples-hard.cpp
+        algorytmy/inne/binomial-theorem.cpp
+        budowa-jezyka/regular-expressions.cpp
 )

@@ -16,6 +16,7 @@ Parada - https://szkopul.edu.pl/problemset/problem/l8-ujU0a7HQFxy8UY32B4Kk_/site
 Bony - https://szkopul.edu.pl/problemset/problem/Y2sHfxzqdwT7qKzabT0fzmlB/site/?key=statement - Szereg harmoniczny - https://pl.wikipedia.org/wiki/Szereg_harmoniczny - 1/2 + 1/3 + 1/4 + 1/5 + 1/6 + ... + 1/n = n * log_2(n) = O(n*log(n))
 Flappy Bird - https://szkopul.edu.pl/problemset/problem/eLy9p2a1VStZ4y9y-LdeB-8f/site/?key=statement
 
+https://codeforces.com/contest/1405/problem/C
 https://codeforces.com/contest/1199/problem/D
 https://codeforces.com/contest/1199/problem/C
 https://codeforces.com/contest/1201/problem/C
@@ -29,4 +30,5 @@ https://codeforces.com/contest/1363/problem/E
 https://codeforces.com/contest/1417/problem/C
 https://codeforces.com/contest/1392/problem/D
 https://codeforces.com/contest/1622/problem/C
-https://codeforces.com/contest/1459/problem/C
+https://codeforces.com/contest/1616/problem/D
+https://codeforces.com/contest/1363/problem/C
