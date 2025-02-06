@@ -104,5 +104,9 @@ int main() {
     // 6. Demonstrating Pointer to Pointer (Dynamic 2D Array)
     demoPointerToPointer();
 
+    // 7. void pointer
+    void *voidPtr = &a; // void pointer can point to any data type
+    cout << "Value pointed to by voidPtr: " << *(int*)voidPtr << endl; // Need to cast to int* before dereferencing
+
     return 0;
 }

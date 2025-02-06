@@ -3,6 +3,9 @@
 
 using namespace std;
 
+//Nie sprawdzamy konkretnej wartości OR na c
+//Zamiast tego sprawdzamy, czy można "zamaskować" wszystkie możliwe a[j] & b[k], aby OR nie wykraczał poza i
+
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr), cout.tie(nullptr);
@@ -24,6 +27,7 @@ int main() {
         for (int j = 0; j < n; j++) {
             //Operacja OR z i działa jak "maskowanie". Sprawdzamy, czy dany wynik a[j]&b[k] jest zgodny z i (czyli czy nie dodaje nowych bitów poza tymi, które są w i).
             //Jeśli i=511 (wszystkie bity od 0 do 8 ustawione, czyli 111111111), to każdy wynik a[j]&b[k] zawsze spełni warunek
+
             bool ase = false; // ase - a possible solution exists
             for (int k = 0; k < m; k++) {
                 if (((a[j] & b[k]) | i) == i) {

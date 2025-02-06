@@ -13,6 +13,7 @@ int countWaysToMakeChange(int coins[], int numCoins, int target) {
     for (int i = 0; i < numCoins; i++) {
         // Update the dp array for all amounts from coin value to target
         for (int j = coins[i]; j <= target; j++) {
+            //jesli coin to 3 a dp[j-coin] = 2 to mamy dwie mozliwosci zeby zrobic j z aktualnym coinem, pomysl ze te kombinacje w dp[j-coin] to 2, albo 1+1 to zeby zrobic 7 to ptrzebujesz 5+2, albo 5+1+1 i dodajemy dp[j], bo to sa wczesniejsze obliczenia
             dp[j] += dp[j - coins[i]]; // j - coin, sprawia, ze dodajemy mozliwosci zrobienia ilosci bez coina, i potem dodajemy tego coina, zeby miec oczekiwana ilosc
         } //j to amount, j=coins[i], czyli j sie rowna na poczatku aktualnemu coinowi, j-coin to ile jest mozilwosci zrobienia coina, ktorego potrzebujemy, a dp[j] to ile jest mozliwosci zrobienia j
     }

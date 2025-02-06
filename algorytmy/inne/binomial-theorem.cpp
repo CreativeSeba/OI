@@ -1,9 +1,10 @@
 //dwumian newtona
-//https://codeforces.com/contest/1462/problem/E2
+
 #include <bits/stdc++.h>
 
 using namespace std;
 
+//Różni się od liczenia kombinacji potęgą ( czyli np. 3^n), że w potęgowaniu liczymy dla każdego elementu(czyli np jesli element moze byc 1, 2 lub 3, to potegujemy 3), a w dwumianie liczymy kombinacje w jaimś ciągu, czyli 1, 2, 3, 4
 //dwumian newtona nie liczy permutacji, tylko kombinacje. Patrzy na ile sposobw mozna zrobic rozne 'okienka'
 vector<vector<int> > compute_binomial_coefficients(int n, int m) {
     // Extra row (n+1) is needed to handle base case C(0, 0) = 1, and C(0, j) = 0 for j > 0.
