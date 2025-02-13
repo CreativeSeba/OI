@@ -1,100 +1,68 @@
 //https://szkopul.edu.pl/problemset/problem/mLyF3KRZMSxwdnrKhXMOjUFJ/site/?key=statement
-#include <iostream>
-#include <string>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-// Funkcja do liczenia ilości zer i dziewiątek w liczbie reprezentowanej jako string
-int countZerosAndNines(const string& number) {
-    int count = 0;
-
-    for (char digit : number) {
-        if (digit == '0' || digit == '9') {
-            count++;
-        }
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr), cout.tie(nullptr);
+    string n;
+    cin >> n;
+    if (n.size() == 1 && n[0] == '1') {
+        cout << 0;
+        return 0;
     }
 
-    return count;
-}
-
-// Funkcja do usuwania wiodących zer z liczby reprezentowanej jako string
-string removeLeadingZeros(const string& number) {
-    const size_t firstNonZero = number.find_first_not_of('0');
-    return (firstNonZero != string::npos) ? number.substr(firstNonZero) : "0";
-}
-
-// Funkcja do obracania cyfr liczby reprezentowanej jako string
-string rotateDigits(const string& number) {
-    if (number.length() <= 1) return number;
-
-    const string rotated = number.substr(1) + number[0];
-
-    return removeLeadingZeros(rotated);
-}
-
-// Funkcja do dodawania 1 do liczby reprezentowanej jako string
-string incrementByOne(const string& number) {
-    string result = number;
-    int carry = 1;
-
-    for (int i = result.length() - 1; i >= 0 && carry; --i) {
-        if (result[i] == '9') {
-            result[i] = '0';
-        } else {
-            result[i]++;
-            carry = 0;
-        }
-    }
-
-    if (carry) result = '1' + result; // Przeniesienie z lewej strony
-
-    return result;
-}
-
-// Funkcja do określenia minimalnej liczby naciśnięć przycisków, aby osiągnąć 1
-long long calculateMinButtonPresses(const string& number) {
-    string currentNumber = number;
-    currentNumber = removeLeadingZeros(number);
-    if (number == "1") return 0;
-
-    long long presses = 0;
-
-    while (currentNumber != "1") {
-        presses++;
-
-        // Jeśli wszystkie cyfry to 9, dodaj 1, ponieważ nie ma sensu obracać cyfr, a dodanie 1 doprowadzi nas bliżej 1
-        bool allNines = true;
-        for (const char digit : currentNumber) {
-            if (digit != '9') {
-                allNines = false;
+    if (n[0] == '1') {
+        bool canEnd = true;
+        for (int i = 1; i < n.size(); i++) {
+            if (n[i] != '0') {
+                canEnd = false;
                 break;
             }
         }
-
-        if (allNines) {
-            currentNumber = incrementByOne(currentNumber);
-            continue;
-        }
-
-        // Jeżeli ostatnia cyfra to 9 lub 0, obróć cyfry, ponieważ dążymy do doprowadzenia do sytuacji, w której
-        // wszystkie cyfry to 9, by móc dodać 1, obrócić i w ten sposób otrzymać 1.
-        // Jeśli ostatnia cyfra nie jest 0 ani 9, dodaj 1, ponieważ dążymy wtedy do otrzymania 9 na końcu.
-        const char lastDigit = currentNumber.back();
-        if (lastDigit == '9' || lastDigit == '0') {
-            currentNumber = rotateDigits(currentNumber);
-        } else {
-            currentNumber = incrementByOne(currentNumber);
+        if (canEnd) {
+            cout << 1;
+            return 0;
         }
     }
 
-    return presses;
-}
+    int result = INT_MAX;
+    int i = 0;
+    do {
+        int curResult = 0;
+        bool skip = true;
+        for (int j = n.size() - 1 - i; j >= 0; j--) {
+            if (j != n.size() - 1 - i) {
+                if (n[j] != '9') {
+                    skip = false;
+                }
+                if (n[j] == '0' || skip) {
+                    continue;
+                }
+            }
+            if (j == n.size() - 1 - i) {
+                //check if the first digit is 0, if it is than we cant just skip further digits when they are 9, we have to first do our late calculations and than we can skip the 9s, by setting skip to true again
+                //we dont have backtrack i to calculate the 9 incrementaitons in zero because the next iteration would do 99 - something and it would include the 9 incrementations
+                if (j == n.size() - 1 && n[j] == '0') {
+                    skip = false;
+                    continue;
+                }
+                if (n[j - 1] == '9') {
+                    skip = true;
+                }
+                curResult += pow(10, i + 1) - 1 - stoi(n.substr(n.size() - 1 - i, n.size()));
+            } else {
+                curResult += 9 - stoi(string(1, n[j])) + 1;
+            }
+        }
+        result = min(result, curResult);
+        i++;
+        //i must be <= 7 becuase 10^7 is million and million is the maximum number of digits in n, so that is how many moves we can do.
+        //n.size() >= 11 because we need at least 11 digits to have a chance to get a better result moving, becuase with 11 digits we can move 10 digits and increment 0 nine times, example: 99999999990
+        //what is also important to notice, is that if the first digit is different from zero we must increment it and we are doing it, but with zero we can either skip it by making it leading zero or increment it and we have to check both, so only >= 11 makes sense to check both, becuase below 11 we can just skip the leading zero and we are done
+    } while (i <= 7 && n.size() >= 11);
 
-int main() {
-    string number;
-    cin >> number;
-
-    cout << calculateMinButtonPresses(number) << endl;
-
+    cout << result + 2;
     return 0;
 }

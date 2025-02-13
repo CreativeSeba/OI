@@ -156,6 +156,8 @@
 
                 current = current* BASE+ digits[i];// Current, to jest ta czesc glownej liczby od ktorej odejmujy, na ktorej wykonujemy obliczenia. Mnozymy przez BASE, bo nawet jesli digits jest 0 to trzeba przeniesc o BASE, zeby byl poprawny wynik, bo digits=0 moze oznaczac 10^9, tak jakby przesuwamy o jedno miejsce w lewo, tak jak w dzieleniu pisemnym, BASE jest jak jedna cyfra
                 uint32_t x = 0, left = 0, right = BASE; //x to ta liczba, ktora jest na gorze w dzieleniu pisemnym, czyli wynik.
+
+                //we do this becuase we cant divide the current by other, because division isnt yet implemented
                 //nie moze byc samo wyszukiwanie binarne, bo dzielimy w wyszukiwaniu binarnym, i nedzie nieskonczona rekurencja
                 while (left <= right) { //wyszukiwanie binarne, zeby znalezc liczbe(other*mid) mniejsza lub rowna current, bo to(other*x) odejumujemy od current
                     uint32_t mid = (left + right) / 2;

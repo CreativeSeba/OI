@@ -3,123 +3,64 @@
 
 using namespace std;
 
-//const int S = 1 << 20;
-//pair<int, int> t[2 * S + 10];  // Segment tree
-//
-//// Function to combine two robots and determine the result
-//pair<int, int> lacz(pair<int, int> s1, pair<int, int> s2) {
-//    if (s2.first > s1.first && s2.second > s1.second) {
-//        return s2;
-//    }
-//    if (s1.first > s2.first && s1.second > s2.second) {
-//        return s1;
-//    }
-//    return {-1, 0};
-//}
-//
-//// Function to build the segment tree
-//void build() {
-//    for (int i = S - 1; i > 0; i--) {
-//        t[i] = lacz(t[i * 2], t[i * 2 + 1]);  // Combine the results of the two children
-////        if(t[i].first != 0 && t[i].second != 0) {
-////            cout << t[i*2].first << " " << t[i*2+1].second << " " << t[i].first << " " << t[i].second << endl;
-////        }
-//    }
-//}
+//nie mozemy dawac rootow ktore wygrywaja ze wszystkimi bo jest tylko jeden taki robot.
+//musimy dac roboty ktore nie przegrywaja, ktore tylko remisuja
 
-string moznaWyeliminowac(vector<pair<int, int>> roboty, int n) {
-    //porownujemy w kolejnosci posortowaych sil, roboty o mniejszej o 1 zwinnosci, i jeszcze jeden base case ( kiedy pierwszy robot ma z = 1, to mozna go od razu wyeliminowac, bo kazy go wyelminuje)
-    //jednak to nie zadziała, ale może zadziałac sprawdzanie ile wygramych bedzie łacznie jesli jest nieparzystali cba robotow, to powinno byc parzyscie wygranych, a jesli nieparzyscie, to nieparzyscie wygranych
-
-    vector<bool> eliminated(n, false);
-    pair<int, int> cur = roboty[n];
-    if (roboty[n].second == n) {
-        return "NIE";
-    }
-    for (int i = n; i > 0; i--) {
-        //cout<<roboty[i].first << " " << roboty[i].second << endl;
-        if (eliminated[i]) {
-            continue;
-        }
-        if (eliminated[cur.first]) {
-            cur = roboty[i];
-            continue;
-        }
-
-    }
-    /*vector<bool> eliminated(n, false);
-    pair<int, int> cur = roboty[n];
-    if (roboty[n].second == n) {
-        return "NIE";
-    }
-    for (int i = n; i > 0; i--) {
-        //cout<<roboty[i].first << " " << roboty[i].second << endl;
-        if (eliminated[i]) {
-            continue;
-        }
-        if (eliminated[cur.first]) {
-            cur = roboty[i];
-            continue;
-        }
-        if (cur.second > roboty[i].second) {
-            //cout<<cur.first << " " << cur.second << " won with " << roboty[i].first << " " << roboty[i].second << endl;
-            eliminated[i] = true;
-        } else if (cur.second < roboty[i].second) {
-            //cout<<cur.first << " " << cur.second << " drew with " << roboty[i].first << " " << roboty[i].second << endl;
-            eliminated[i] = true;
-            eliminated[cur.first] = true;
-        }
-    }
-    *//*   cout<<cur.first << " " << cur.second << endl;
-       cout << "Eliminated: "<<eliminated[cur.first] << endl;*//*
-    bool wynik = eliminated[cur.first];
-    if (wynik) {
-        return "TAK";
-    } else {
-        if (cur.second < n && !eliminated[cur.first]) { // ten warunek jest zły
-            return "TAK";
-        } else {
-            return "NIE";
-        }
-    }*/
-}
+struct Robot {
+    int s, z;
+};
 
 int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr), cout.tie(nullptr);
     int n;
     cin >> n;
-
-    vector<pair<int, int>> roboty(n + 1);
-    vector<
-    // Initialize roboty to default values
-
+    vector<Robot> robots(n);
     for (int i = 0; i < n; i++) {
-        int s, z;
-        cin >> s >> z;
-        s++, z++;
-        // Ensure s is in the valid range
-//        if (s < 1 || s > n) {
-//            cerr << "Invalid value for s: " << s << endl;
-//
-//        }
-
-        roboty[s] = {s, z};  // Assign to the corresponding position
+        cin >> robots[i].s >> robots[i].z;
     }
-    cout << moznaWyeliminowac(roboty, n) << endl;
-    // Initialize leaves of the segment tree
-//    for (int i = 0; i < n; i++) {
-//        int z = roboty[i].second;
-//        z--;
-//        t[z + S] = roboty[i];
-//    }
+    //przehodzimy od ostatniego, bo ostatni nigdy nie przegra bo jest najsilniejszy
+    sort(robots.begin(), robots.end(), [](Robot a, Robot b) {
+        return a.s > b.s;
+    });
 
-    // Build the segment tree
-//    build();
-
-    // The result is at the root of the tree (t[1])
-//    pair<int, int> wynik = t[1];
-//    cout << wynik.first << " " << wynik.second << endl;
-
-
+    vector<Robot> notLoosingRobots, losingRobots;
+    //musimy sprawdzic czy aktualny robot jest zwinniejszy od poprzednich, tzn. czy jest wyzej na ukladzie wspolrzednych, bo wiemy ze nie jest dalej na prawo, gdyz posortowalismy tablice wedlug sily
+    int maxAgility = 0;
+    for (Robot curRobot: robots) {
+        if (curRobot.z > maxAgility) {
+            maxAgility = curRobot.z;
+            notLoosingRobots.push_back(curRobot);
+        } else {
+            losingRobots.push_back(curRobot);
+        }
+    }
+    Robot mostLoosingAgile{}, mostLoosingStrong{};
+    for (auto &robot : losingRobots) {
+        if (robot.s > mostLoosingStrong.s) {
+            mostLoosingStrong = robot;
+        }
+        if (robot.z > mostLoosingAgile.z) {
+            mostLoosingAgile = robot;
+        }
+    }
+    bool canEmpty = false;
+    //patrzymy czy najzwinniejszy robot, lub najsilniejszy robot, ktore nie sa w zbiorze majoryzującym remisują z jakiemkolwiek robotem ze zbioru majoryzującego
+    if (notLoosingRobots.size()%2 == 0) {
+        canEmpty = true;
+    } else {
+        for (auto &winningRobot : notLoosingRobots) {
+            if (winningRobot.s < mostLoosingStrong.s || winningRobot.z < mostLoosingAgile.z) {
+                canEmpty = true;
+                break;
+            }
+        }
+    }
+    if (canEmpty) {
+        cout<<"TAK\n";
+    } else {
+        cout<<"NIE\n";
+    }
 
     return 0;
 }

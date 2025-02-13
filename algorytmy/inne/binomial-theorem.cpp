@@ -1,3 +1,4 @@
+//https://chatgpt.com/share/675577cd-dd84-800f-848a-a0b3135c1edd
 //dwumian newtona
 
 #include <bits/stdc++.h>

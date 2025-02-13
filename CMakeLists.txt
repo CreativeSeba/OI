@@ -4,5 +4,6 @@ project(OI)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(OI
-        zadania-I-etap/gildie.cpp
+        zadania-I-etap/spawiedliwy-podzial.cpp
+        #        budowa-jezyka/timing.cpp
 )
