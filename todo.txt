@@ -1,6 +1,5 @@
 Skarbonki - https://szkopul.edu.pl/problemset/problem/lm7lS3cC3aTRwlRaCztGRkov/site/?key=statement
 Łuk triumfalny - https://szkopul.edu.pl/problemset/problem/jgCcEjQu3kdpM4BmxA6GujfX/site/?key=statement
-Plakatowanie - https://szkopul.edu.pl/problemset/problem/au-E9FH96-3U9rCKhcNsD5n9/site/?key=statement
 Tetris Attack - https://szkopul.edu.pl/c/oboz10-14grupa__minus1/p/tet/18281/
 Trójkąty jednobarwne - https://szkopul.edu.pl/problemset/problem/UU2Uj-barjiONnRxd9aEVoDj/site/?key=statement
 Dziuple - https://szkopul.edu.pl/problemset/problem/UU2Uj-barjiONnRxd9aEVoDj/site/?key=statement
@@ -32,3 +31,5 @@ https://codeforces.com/contest/1392/problem/D
 https://codeforces.com/contest/1622/problem/C
 https://codeforces.com/contest/1616/problem/D
 https://codeforces.com/contest/1363/problem/C
+https://codeforces.com/contest/1616/problem/C
+https://codeforces.com/contest/1644/problem/D

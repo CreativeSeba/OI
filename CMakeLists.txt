@@ -4,6 +4,6 @@ project(OI)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(OI
-        zadania-I-etap/spawiedliwy-podzial.cpp
+        zadania-nie-oi/differential-sorting.cpp
         #        budowa-jezyka/timing.cpp
 )
