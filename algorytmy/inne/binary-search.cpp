@@ -2,42 +2,44 @@
 
 using namespace std;
 
-int binary_search(const vector<int>& list, int goal) {
-    int left = 0;
-    int right = list.size() - 1;
+int binarySearch(vector<int>& arr, int goal) {
+    int left = 0, right = arr.size() - 1;
 
     while (left <= right) {
         int mid = left + (right - left) / 2;
-        // Sprawdzamy, czy cel znajduje się na środku
-        if (list[mid] == goal) {
+
+        if (arr[mid] == goal) {
             return mid;
         }
-        // Jeśli cel jest większy, ignorujemy lewą połowę
-        if (list[mid] < goal) {
+        //we need to add one and subtract one, becuase the loop wont end, becuase it will be stuck on the equal element
+        //we also need this, becuase we dont need to check the mid element, becuase we have already checkes if it is the goal in the if statement above
+        if (arr[mid] < goal) {
             left = mid + 1;
-        }
-            // Jeśli cel jest mniejszy, ignorujemy prawą połowę
-        else {
+        } else {
             right = mid - 1;
         }
     }
-    // Zwracamy -1, jeśli element nie został znaleziony
-    return -1;
+    return -1; // Element not found
 }
 
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr), cout.tie(nullptr);
+    int n;
+    cin >> n;
 
-    vector<int> list = {2, 3, 4, 10, 40};
-    int goal = 10;
+    vector<int> arr(n);
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
+    }
+    sort(arr.begin(), arr.end());
 
-    int result = binary_search(list, goal);
+    int goal;
+    cin >> goal;
 
+    int result = binarySearch(arr, goal);
     if (result != -1) {
-        cout << "Element znaleziony na indeksie: " << result << endl;
+        cout << "Element found at index: " << result << endl;
     } else {
-        cout << "Element nie jest obecny w liście." << endl;
+        cout << "Element not found" << endl;
     }
 
     return 0;

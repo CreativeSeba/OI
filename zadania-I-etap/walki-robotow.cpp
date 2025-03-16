@@ -45,7 +45,8 @@ int main() {
         }
     }
     bool canEmpty = false;
-    //patrzymy czy najzwinniejszy robot, lub najsilniejszy robot, ktore nie sa w zbiorze majoryzującym remisują z jakiemkolwiek robotem ze zbioru majoryzującego
+    //patrzymy czy najzwinniejszy robot, lub najsilniejszy robot, ktore nie sa w zbiorze majoryzującym remisują z jakimkolwiek robotem ze zbioru majoryzującego
+    //roboty ze zbioru majorujacego są w stanie "wyczyścic" roboty pod nimi w ukladzie wspolrzednych, dlatego trzeba sprawdzic czy jest jeden robot ktory moze sprawic ze nieparzyste notLoosingRobots beda parzyste
     if (notLoosingRobots.size()%2 == 0) {
         canEmpty = true;
     } else {

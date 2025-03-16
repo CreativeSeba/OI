@@ -4,6 +4,7 @@ project(OI)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(OI
-        zadania-nie-oi/differential-sorting.cpp
+ #[[       zadania-I-etap/przemytnicy.cpp]]
+        codeforces/decode.cpp
         #        budowa-jezyka/timing.cpp
 )

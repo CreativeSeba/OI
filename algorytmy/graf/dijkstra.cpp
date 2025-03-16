@@ -1,97 +1,83 @@
+//O((V+E)logV) VlogV - usuwanie, bo nie bierzemy pod uwage wierzchołków, które już odwiedziliśmy, ElogV - dodawanie, bo dla każdego wierzchołka sprawdzamy wszystkich sąsiadów
+//log V, bo dodajemy odleglosci miedzy wierzchjolkami, a nie edge, np. moze byc C F - 10, miezy C i F jest np. 5, ale lacznie aby dojsc do F z C to 10. I nawet jesli w kolejce jest V^2, to i tak log V, bo log V^2, to 2logV, a ignorujemy stale wartosci, wiec log V
+
 #include <bits/stdc++.h>
 
 using namespace std;
 
-#define INF 0x3f3f3f3f //ok 2^30, czyli mniejsze od MAX_INT, wiec nie bedzie bledow z dodawaniem
-
 typedef pair<int, int> iPair;
 
-//O((V+E)logV) VlogV - usuwanie, bo nie bierzemy pod uwage wierzchołków, które już odwiedziliśmy, ElogV - dodawanie, bo dla każdego wierzchołka sprawdzamy wszystkich sąsiadów
-//log V, bo dodajemy odleglosci miedzy wierzchjolkami, a nie edge, np. moze byc C F - 10, miezy C i F jest np. 5, ale lacznie aby dojsc do F z C to 10. I nawet jesli w kolejce jest V^2, to i tak log V, bo log V^2, to 2logV, a ignorujemy stale wartosci, wiec log V
+vector<int> path_iter(vector<int> &parent, int targetNode, int startNode) {
+    if (parent[targetNode] == -1 && targetNode != startNode) return {};
 
-void addEdge(vector<iPair> adj[], int u, int v, int wt) {
-    adj[u].push_back(make_pair(v, wt));
-    adj[v].push_back(make_pair(u, wt));
+    vector<int> path;
+    for (int node = targetNode; node != -1; node = parent[node]) {
+        path.push_back(node);
+    }
+    reverse(path.begin(), path.end());
+    return path;
 }
 
-void printPath(vector<int> &parent, int j) {
-    // Base Case : If j is source
-    if (parent[j] == -1) {
-        cout << j << " ";  // This is the source node
+void path_rec(vector<int> &parent, int node, int startNode, vector<int> &path) {
+    if (parent[node] == -1 && node != startNode) return;
+    if (parent[node] == -1) {
+        path.push_back(node);
         return;
     }
-
-    printPath(parent, parent[j]);
-    cout << j << " ";
+    path_rec(parent, parent[node], startNode, path);
+    path.push_back(node);
 }
 
-void shortestPath(vector<pair<int, int>> adj[], int V, int src, int dest) {
-    // Min heap to store the vertices that are being preprocessed.
-    priority_queue<iPair, vector<iPair>, greater<iPair>> pq;
+vector<int> dijkstra(int startNode, int targetNode, vector<vector<iPair> > &adj) {
+    int n = adj.size();
 
-    // Distance and parent vectors
-    vector<int> dist(V, INF);    // Stores shortest distance to each node
-    vector<int> parent(V, -1);   // Stores the path (predecessor) for each node
-    vector<bool> visited(V, false); // To mark visited nodes
+    vector<int> dist(n, INT_MAX), parent(n, -1);
+    dist[startNode] = 0;
 
-    pq.push(make_pair(0, src));  // Push the source node with distance 0
-    dist[src] = 0;
+    priority_queue<iPair, vector<iPair>, greater<iPair> > pq;
+    pq.emplace(0, startNode);
 
     while (!pq.empty()) {
-        int u = pq.top().second;
+        int node = pq.top().second;
+        int currentDist = pq.top().first;
         pq.pop();
 
-        if (visited[u]) continue;
+        if (node == targetNode) break;
+        //we cant use >=, because the problem lies in the fact,
+        //that in protiy queue we basiacally store the same distance as dist[node], and we wont almost every time perform 'bfs' from that node
+        if (currentDist > dist[node]) continue;
 
-        visited[u] = true;
+        for (auto adjacent: adj[node]) {
+            int v = adjacent.first;
+            int w = adjacent.second;
 
-        // Go through all neighbors of u
-        for (auto x: adj[u]) {
-            int v = x.first;
-            int weight = x.second;
-
-            // If a shorter path to v is found
-            if (!visited[v] && dist[v] > dist[u] + weight) {
-                dist[v] = dist[u] + weight;
-                pq.push(make_pair(dist[v], v));
-                parent[v] = u;  // Set the predecessor of v as u
+            if (dist[v] > dist[node] + w) {
+                dist[v] = dist[node] + w;
+                pq.emplace(dist[v], v);
+                parent[v] = node;
             }
         }
     }
-    cout<<"Vertex Distance from Source\n";
-    for (int i = 0; i < V; ++i) {
-        cout << i << "\t\t" << dist[i] << "\n";
-    }
-    // Printing shortest distance and the path to the destination node
-    if (dist[dest] == INF) {
-        cout << "No path exists from " << src << " to " << dest << "\n";
-    } else {
-        cout << "Shortest distance from " << src << " to " << dest << " is " << dist[dest] << "\n";
-        cout << "Path: ";
-        printPath(parent, dest);
-        cout << "\n";
-    }
+
+    return path_iter(parent, targetNode, startNode);
 }
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr), cout.tie(nullptr);
 
-    int n, m, V;
+    int n, m;
     cin >> n >> m;
-    V = n + 1;
 
-    vector<iPair> adj[V];
-
-    for(int i = 0; i < m; i++) {
-        int u, v, wt;
-        cin >> u >> v >> wt;
-        addEdge(adj, u, v, wt);
+    vector<vector<iPair> > adj(n);
+    for (int i = 0; i < m; i++) {
+        int u, v, w;
+        cin >> u >> v >> w;
+        adj[u].emplace_back(v, w);
+        adj[v].emplace_back(u, w);
     }
 
-    int src = 1;
-    int dest = n;
-    shortestPath(adj, V, src, dest);  // Find shortest path from node src to dest
-
+    int startNode = 0, targetNode = n - 1;
+    vector<int> shortestPath = dijkstra(startNode, targetNode, adj);
     return 0;
 }

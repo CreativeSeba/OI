@@ -60,13 +60,15 @@ int main() {
                 // Sprawdzamy, czy możemy rozciągnąć najdłuższe wspólne zająknięcie (LCS) przez dopasowanie A[i] i B[j]:
                 // 1. A[i] musi być równe B[j],
                 // 2. B[j] musi mieć wcześniejsze wystąpienie (lastB[j] != 0),
-                // 3. Długość zająknięcia dla B[j] musi być taka sama, jak dla poprzedniego elementu w B,
+                // 3. Długość zająknięcia dla B[j] musi być taka sama, jak dla poprzedniego elementu w B odjac 1, zeby miec pary,
                 // 4. Pozycja, na której znaleziono dopasowanie w A (equal[lastB[j] - 1]), musi być mniejsza od pozycji A[i],
                 //    aby zachować poprawną kolejność elementów w A i B, equal[lastB[j] - 1] musi byc mniejsze od lastA[i], bo last[A], to tak jakby poczatek nowej pary, noweg zająknięcia, wiec zeby utrzymac kolejnosc to musi byc mniejsze
+                // to się dzieje, jak m przekroczy poprzednie zająknięcie
                 if (A[i] == B[j] && lastB[j] != 0 && dp[j] == dp[lastB[j] - 1] && equal[lastB[j] - 1] < lastA[i]) {
                     isValid = true;
                 }
 
+                //to jest po to, aby zaktualizować dp[j], żeby nie było zerem. To się dzieje dopóki nasze m nie będzie wieksze od starego zająknięcia
                 //jesli dp[j-1] > dp[j] to zawsze dp[j-1] jest wieksze o 1 od dp[j]
                 if (dp[j - 1] > dp[j]) { // jesli dp[j-1] > dp[j] to znaczy ze dp[j] ma miejsce by byc zwiększony
                     isValid = true;  // Zająknięcie w B może być wydłużone
