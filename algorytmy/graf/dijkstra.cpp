@@ -44,7 +44,8 @@ vector<int> dijkstra(int startNode, int targetNode, vector<vector<iPair> > &adj)
 
         if (node == targetNode) break;
         //we cant use >=, because the problem lies in the fact,
-        //that in protiy queue we basiacally store the same distance as dist[node], and we wont almost every time perform 'bfs' from that node
+        //that in protiy queue we basically store the same distance as dist[node], and we wont almost every time perform 'bfs' from that node, so currentDist will be always equal to dist[node]
+        //in the for loop below we make sure that we dont add any duplicates to the priority queue
         if (currentDist > dist[node]) continue;
 
         for (auto adjacent: adj[node]) {
@@ -79,5 +80,6 @@ int main() {
 
     int startNode = 0, targetNode = n - 1;
     vector<int> shortestPath = dijkstra(startNode, targetNode, adj);
+
     return 0;
 }

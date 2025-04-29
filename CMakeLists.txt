@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_executable(OI
  #[[       zadania-I-etap/przemytnicy.cpp]]
-        codeforces/decode.cpp
+        codeforces/integral-array.cpp
+        zadania-II-etap/przekazniki-telekomunikacyjne.cpp
         #        budowa-jezyka/timing.cpp
 )
